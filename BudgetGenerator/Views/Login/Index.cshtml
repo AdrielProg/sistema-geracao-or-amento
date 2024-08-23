@@ -1,0 +1,63 @@
+@model BudgetGenerator.Models.LoginModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+
+<body>
+    <div id="page" class="flex">
+        <div class="login-container">
+            <header class="flex">
+                <img src="~/images/locotipoSMN.oficial.png" alt="Logotipo SMN" />
+            </header>
+            <main class="flex">
+                <div class="head-form">
+                    <h1>Acesse a Plataforma</h1>
+                    <p>Faça login para gerar orçamentos</p>
+                </div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div style="color:red;" id="error-message" class="flex">
+                        <p>Username ou senha incorretos.</p>
+                    </div>
+                }
+
+                <form asp-action="Authenticate" method="post">
+                    <div class="input-element">
+                        <div class="label-element">
+                            <label for="email">E-mail</label>
+                        </div>
+                        <input asp-for="Username" type="text" id="username" required />
+                    </div>
+                    <div class="input-element flex">
+                        <div class="label-element flex">
+                            <label for="password">Senha</label>
+                            <a href="#">Esqueceu a senha?</a>
+                        </div>
+                        <input asp-for="Password" type="password" id="password" required />
+                        <img hidden src="~/imagens/svgs/eye-regular.svg" alt="Mostrar Senha" />
+                    </div>
+                    <button class="flex" type="submit">Entrar</button>
+                </form>
+            </main>
+        </div>
+        <div class="bg-image">
+            <img src="~/images/bg-login.jpg" alt="Background Login" />
+        </div>
+    </div>
+
+    <script src="~/js/login.js"></script>
+</body>
+
+</html>
