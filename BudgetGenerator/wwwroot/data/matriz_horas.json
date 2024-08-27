@@ -1,0 +1,484 @@
+{
+    "operacoes": {
+      "telas": {
+        "web": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 2
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 6
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 9
+          }
+        }
+      },
+      "relatorios": {
+        "pdf": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 4
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 10
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 16
+          }
+        },
+        "excel_word": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 8
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 12
+          }
+        }
+      },
+      "sql": {
+        "procedure": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 5
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 10
+          }
+        },
+        "job": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 7
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 12
+          }
+        },
+        "trigger": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 2
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 8
+          }
+        },
+        "funcao": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "scripts": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "modelagem": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 2
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 6
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 12
+          }
+        }
+      },
+      "api": {
+        "operacao": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 2
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 5
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 8
+          }
+        }
+      },
+      "servicos": {
+        "console": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 8
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 12
+          }
+        }
+      }
+    }, "integracoes": {
+      "telas": {
+        "web": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 5
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 7
+          }
+        }
+      },
+      "relatorios": {
+        "pdf": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 3
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "excel_word": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 3
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        }
+      },
+      "sql": {
+        "procedure": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "job": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "trigger": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "funcao": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 3
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "scripts": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 1
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 4
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        },
+        "modelagem": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 6
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 12
+          }
+        }
+      },
+      "api": {
+        "operacao": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 5
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 6
+          }
+        }
+      },
+      "servicos": {
+        "console": {
+          "facil": {
+            "pontos": "1 a 5",
+            "horas": 3
+          },
+          "medio": {
+            "pontos": "6 a 10",
+            "horas": 8
+          },
+          "complexo": {
+            "pontos": "acima de 10",
+            "horas": 12
+          }
+        }
+      }
+    },
+    "testes": {
+    "telas": {
+      "web": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 1
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 3
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 9
+        }
+      }
+    },
+    "relatorios": {
+      "pdf": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 1
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 3
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 12
+        }
+      },
+      "excel_word": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 1
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 3
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 12
+        }
+      }
+    },
+    "sql": {
+      "procedure": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 1
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 4
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 6
+        }
+      },
+      "job": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 1
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 5
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 8
+        }
+      },
+      "trigger": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 2
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 5
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 8
+        }
+      },
+      "funcao": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 1
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 3
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 6
+        }
+      },
+      "scripts": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 3
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 6
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 10
+        }
+      },
+      "modelagem": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 3
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 6
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 12
+        }
+      }
+    },
+    "api": {
+      "operacao": {
+        "facil": {
+          "pontos": "1 a 5",
+          "horas": 3
+        },
+        "medio": {
+          "pontos": "6 a 10",
+          "horas": 6
+        },
+        "complexo": {
+          "pontos": "acima de 10",
+          "horas": 10
+        }
+      }
+    }
+  }
+}
+  

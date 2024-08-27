@@ -1,0 +1,39 @@
+@model BudgetGenerator.Models.ReportModel
+
+@{
+    Layout = null;
+    var featureCounter = 1;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Generator</title>
+</head>
+
+<body>
+    <h1>Relatório de Funcionalidades</h1>
+
+    @foreach (var feature in Model.Features)
+    {
+        <h2>Funcionalidade @featureCounter: @feature.Name</h2>
+        <h3>Serviços</h3>
+        <ul>
+            @foreach (var service in feature.Services)
+            {
+                <li class="services-list">@service.ServiceType - Complexidade: @service.Complexity - Horas: @service.Hours</li>
+            }
+        </ul>
+        <p><strong>Descrição:</strong> @feature.Description</p>
+        <p><strong>Total de Horas da Funcionalidade:</strong> @feature.AmountHours</p>
+
+        featureCounter++;
+    }
+
+    <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
+</body>
+
+</html>
