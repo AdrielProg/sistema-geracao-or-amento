@@ -1,0 +1,24 @@
+@model BudgetGenerator.Models.ReportInputModel
+<link rel="stylesheet" href="~/css/generator.css">
+
+<h2>Cadastro de Relatório</h2>
+
+<!-- Formulário para o título e descrição do relatório -->
+<form asp-action="GenerateReport" method="post" id="formRelatorio">
+    <div>
+        <label for="tituloRelatorio">Título do Relatório:</label>
+        <input type="text" id="tituloRelatorio" name="ReportTitle" required />
+    </div>
+
+
+    <div id="funcionalidadesContainer">
+        <!-- Aqui serão adicionados os campos para funcionalidades e serviços -->
+    </div>
+
+    <button type="button" id="addFuncionalidadeBtn">Adicionar Funcionalidade</button>
+    <button type="submit" id="generateReportBtn">Gerar Relatório PDF</button>
+</form>
+
+@section Scripts {
+    <script src="~/js/budgetGenerator.js"></script>
+}

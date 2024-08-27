@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.8" />
     <title>Login</title>
     <link rel="stylesheet" href="~/css/login.css" />
 </head>
@@ -22,8 +22,7 @@
             </header>
             <main class="flex">
                 <div class="head-form">
-                    <h1>Acesse a Plataforma</h1>
-                    <p>Faça login para gerar orçamentos</p>
+                    <h1>Gerador de Orçamento</h1>
                 </div>
                 <form asp-action="Authenticate" method="post">
                     <div class="input-element">
@@ -49,11 +48,7 @@
                 }
             </main>
         </div>
-        <div class="bg-image flex">
-            <img src="~/images/bg-login.jpg" alt="Background Login" />
-        </div>
     </div>
     <script src="~/js/login.js"></script>
 </body>
-
 </html>

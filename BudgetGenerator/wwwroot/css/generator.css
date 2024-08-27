@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+     font-family: Tahoma, sans-serif;
+}
+
+:root {
+    font-size: 62.5%;
+    --color-grey: #a3bdcc;
+    --color-white: #fff;
+    --color-dark-blue: #051523;
+    --color-blue-green: #203243;
+    --color-grey-bg: rgba(209, 218, 207, 0.966);
+    --color-green-logo: #59d856;
+}
+
+body {
+    color: var(--color-grey);
+    height: 100%;
+    background: linear-gradient(
+        to bottom left,
+        var(--color-blue-green),
+        var(--color-dark-blue)
+    );
+
+}
+
+.service {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px; 
+    margin-bottom: 10px; 
+  }
+  
+  .service > div {
+    flex: 1 1 20%; 
+    min-width: 150px; 
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 5px;
+  }
+  

@@ -5,6 +5,7 @@ namespace BudgetGenerator.Controllers
 {
     public class LoginController : Controller
     {
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -17,7 +18,7 @@ namespace BudgetGenerator.Controllers
 
             if (login.Username == "admin" && login.Password == "1234")
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ShowReportPage", "BudgetGenerator");
             }
 
             ModelState.AddModelError("", "Username ou senha incorretos.");

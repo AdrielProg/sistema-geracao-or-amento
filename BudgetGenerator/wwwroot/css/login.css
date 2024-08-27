@@ -8,21 +8,33 @@
 
 :root {
     font-size: 62.5%;
-    --color-grey: #6b7d87;
+    --color-grey: #a3bdcc;
     --color-white: #fff;
-    --color-green:#354b31 ;
-    --color-blue-green:  #697b51;
-    --color-grey-bg:  rgba(209, 218, 207, 0.966);
-    --color-green-logo: #66f763d2;
+    --color-dark-blue: #051523;
+    --color-blue-green: #203243;
+    --color-grey-bg: rgba(209, 218, 207, 0.966);
+    --color-green-logo: #59d856;
 }
-html{
-    height: 100vh;
-}
+
 body {
     font-size: 1.6rem;
     color: var(--color-grey);
-    background-color: var(--color-grey-bg);
+    height: 100vh;
+
+    font-family: Tahoma, sans-serif;
+}
+body::before {
+    content: "";
+    background-image: url("../images/bg-login.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    width: 100%;
     height: 100%;
+    z-index: -1;
 }
 main {
     margin-top: 4rem;
@@ -34,7 +46,7 @@ main {
     max-width: 40rem;
     margin-bottom: 2rem;
 }
-.bg-image{
+.bg-image {
     height: 100%;
 }
 header {
@@ -52,49 +64,48 @@ header img {
     object-fit: contain;
 }
 
-
 form {
-    width: 36rem;
+    width: 100%;
 }
 
 main .head-form {
     width: 100%;
-    color: var(--color-green);
+    color: var(--color-grey);
     & h1 {
         margin-bottom: 0.4rem;
-        color: #6b7d87;
+        font-weight: 540;
     }
 }
 
 form input {
     width: 100%;
-    background-color: var(--color-grey-bg);
+    background-color: var(--color-grey);
     border: 0.1rem solid var(--color-grey);
     border-radius: 0.7rem;
     padding: 1.6rem 1.2rem;
-    color: var(--color-green);
+    color: var(--color-dark-blue);
     font-size: 1.5rem;
-
 }
 form input:active,
-form input:-webkit-autofill, 
+form input:-webkit-autofill,
 form input:focus {
-    outline: solid 0.1rem var(--color-blue-green);
-    border-color: var(--color-blue-green);
-    background-color: var(--color-grey-bg);
-    -webkit-box-shadow: 0 0 0 30px var(--color-grey-bg) inset; 
+    outline: solid 0.1rem var(--color-grey);
+    border-color: var(--color-grey);
+    background-color: var(--color-grey);
+    -webkit-box-shadow: 0 0 0 30px var(--color-grey) inset;
 }
 
 form .input-element + .input-element {
     margin-top: 0.8rem;
 }
 form .label-element {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.6rem;
+    color: var(--color-grey);
 
     & a {
         text-decoration: none;
-        color: var(--color-green);
-        font-weight: 600;
+        color: var(--color-grey);
+        font-weight: 540;
     }
 }
 form button {
@@ -102,40 +113,52 @@ form button {
     justify-content: center;
     align-items: center;
     padding: 1.6rem 2.4rem;
-    background: var(--color-blue-green);
-    color: var(--color-white);
+    background: var(--color-green-logo);
+    color: var(--color-dark-blue);
     font-weight: bold;
     border-radius: 5rem;
     width: 88%;
     margin-block: 3.2rem;
+    cursor: pointer;
 }
-.head-form
-
-form button:focus {
+.head-form form button:focus {
     outline: solid 0.1rem var(--color-blue-green);
 }
 form button:hover {
-    background: linear-gradient(to right, var(--color-green), var(--color-blue-green));
+    background: linear-gradient(
+        to bottom left,
+        var(--color-dark-blue),
+        var(--color-green-logo)
+    );
+    color: var(--color-grey);
 }
 #page {
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-#page > * {
-    width: 50%;
-}
+
 #page > .login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-
-}#page > .bg-image{
+    padding: 50px;
+    border-radius: 3.2rem;
+    background-image: linear-gradient(
+        to bottom left,
+        var(--color-blue-green),
+        var(--color-dark-blue)
+    );
+}
+#page > .bg-image {
     height: 100%;
     justify-content: center;
     align-items: center;
+    background-color: #060d1f;
 }
-#error-message{
+#error-message {
     height: 2rem;
     justify-content: center;
     align-items: flex-end;
@@ -150,12 +173,10 @@ form button:hover {
 }
 .input-element {
     flex-direction: column;
-    color: var(--color-green);
 }
 
-@media(max-width: 622px) {
-    
-    .bg-image{
+@media (max-width: 622px) {
+    .bg-image {
         display: none;
     }
     #page {
