@@ -25,25 +25,24 @@
                     <h1>Gerador de Orçamento</h1>
                 </div>
                 <form asp-action="Authenticate" method="post">
-                    <div class="input-element">
-                        <div class="label-element">
-                            <label for="email">E-mail</label>
-                        </div>
+                    <div class="input-element flex">
+                        <label for="email">E-mail</label>
                         <input asp-for="Username" type="text" id="username" required />
                     </div>
                     <div class="input-element flex">
-                        <div class="label-element flex">
-                            <label for="password">Senha</label>
+                        <label for="password">Senha</label>
+                        <input asp-for="Password" type="password" id="password" required />
+                        <div class="flex nav-container">
+                            <div class="flex checkbox-container">
+                                <input type="checkbox" id="remember-me">
+                                <label id="label-remember" for="remember-me">Continuar logado</label>
+                            </div>
                             <a href="#">Esqueceu a senha?</a>
                         </div>
-                        <input asp-for="Password" type="password" id="password" required />
                     </div>
                     <div class="button-container flex">
                         <button class="flex" type="submit">Entrar</button>
                     </div>
-
-
-
                 </form>
                 <div id="error-message" class="flex">
                     @if (!ViewData.ModelState.IsValid)
