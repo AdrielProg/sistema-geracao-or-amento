@@ -38,17 +38,23 @@
                         </div>
                         <input asp-for="Password" type="password" id="password" required />
                     </div>
-                    <button class="flex" type="submit">Entrar</button>
-                </form>
-                @if (!ViewData.ModelState.IsValid)
-                {
-                    <div id="error-message" class="flex">
-                        <p>Username ou senha incorretos.</p>
+                    <div class="button-container flex">
+                        <button class="flex" type="submit">Entrar</button>
                     </div>
-                }
+
+
+
+                </form>
+                <div id="error-message" class="flex">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <p>Username ou senha incorretos.</p>
+                    }
+                </div>
             </main>
         </div>
     </div>
     <script src="~/js/login.js"></script>
 </body>
+
 </html>
