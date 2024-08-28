@@ -163,7 +163,7 @@ async function initializeForm() {
           <option value="">Selecione</option>
           </select>
           </div>
-          <div>
+          <div class="service-hours">
           <label>Horas:</label>
           <input type="number" name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].Hours" min="1" readonly />
           </div>

@@ -18,5 +18,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  font-size: 1.6rem;
+  color: var(--color-grey);
+  height: 100vh;
+  background-image: 
+  linear-gradient(to bottom right, var(--color-blue-green) 20%, var(--color-dark-blue) 80%),
+  linear-gradient(to top left, var(--color-grey-bg) 30%, var(--color-green-logo) 100%);
+  font-family: Tahoma, sans-serif;
 }

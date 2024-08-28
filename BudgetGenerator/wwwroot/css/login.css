@@ -20,22 +20,12 @@ body {
     font-size: 1.6rem;
     color: var(--color-grey);
     height: 100vh;
-
+    background-image: 
+    linear-gradient(to bottom right, var(--color-blue-green) 20%, var(--color-dark-blue) 80%),
+    linear-gradient(to top left, var(--color-grey-bg) 30%, var(--color-green-logo) 100%);
     font-family: Tahoma, sans-serif;
 }
-body::before {
-    content: "";
-    background-image: url("../images/bg-login.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-    filter: blur(3px);
-    -webkit-filter: blur(3px);
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
+
 main {
     margin-top: 4rem;
     flex-direction: column;
@@ -146,11 +136,8 @@ form button:hover {
     align-items: center;
     padding: 50px;
     border-radius: 3.2rem;
-    background-image: linear-gradient(
-        to bottom left,
-        var(--color-blue-green),
-        var(--color-dark-blue)
-    );
+    border: solid 0.56rem #02060ada;
+    background-color: hsla(210, 67%, 2%, 0.25);
 }
 #page > .bg-image {
     height: 100%;

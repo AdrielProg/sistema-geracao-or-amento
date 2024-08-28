@@ -18,37 +18,57 @@
 }
 
 body {
+    font-size: 1.6rem;
     color: var(--color-grey);
-    height: 100%;
-    background: linear-gradient(
-        to bottom left,
-        var(--color-blue-green),
-        var(--color-dark-blue)
-    );
-
+    min-height: 100vh;
+    max-height: auto;
+    background-image: 
+    linear-gradient(to bottom right, var(--color-blue-green) 20%, var(--color-dark-blue) 80%),
+    linear-gradient(to top left, var(--color-grey-bg) 30%, var(--color-green-logo) 100%);
+    font-family: Tahoma, sans-serif;
 }
+
+
 
 .service {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     gap: 10px; 
     margin-bottom: 10px; 
-  }
   
-  .service > div {
-    flex: 1 1 20%; 
-    min-width: 150px; 
-  }
+    & label{
+        text-align: center;
+    }
+}
+.main-container{
+    padding: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
   
   label {
     display: block;
-    font-weight: bold;
+    font-weight: 600;
   }
+  .service-hours{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
   
   input, select, textarea {
+    padding: 0.7rem;
+    margin: 0.9rem 0;
     width: 100%;
-    padding: 5px;
+    
+  }
+  #tituloRelatorio{
+    width: 68rem;
   }
   
+  textarea {
+    height: 10rem;
+  }
