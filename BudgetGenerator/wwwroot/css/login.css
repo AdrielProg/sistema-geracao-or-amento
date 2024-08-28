@@ -20,9 +20,16 @@ body {
     font-size: 1.6rem;
     color: var(--color-grey);
     height: 100vh;
-    background-image: 
-    linear-gradient(to bottom right, var(--color-blue-green) 20%, var(--color-dark-blue) 80%),
-    linear-gradient(to top left, var(--color-grey-bg) 30%, var(--color-green-logo) 100%);
+    background-image: linear-gradient(
+            to bottom right,
+            var(--color-blue-green) 20%,
+            var(--color-dark-blue) 80%
+        ),
+        linear-gradient(
+            to top left,
+            var(--color-grey-bg) 30%,
+            var(--color-green-logo) 100%
+        );
     font-family: Tahoma, sans-serif;
 }
 
@@ -136,8 +143,11 @@ form button:hover {
     align-items: center;
     padding: 50px;
     border-radius: 3.2rem;
-    border: solid 0.56rem #02060ada;
-    background-color: hsla(210, 67%, 2%, 0.25);
+    border: solid 0.36rem var(--color-dark-blue);
+    backdrop-filter: blur(2rem);
+    -webkit-backdrop-filter: blur(2rem);
+    background-color: hsla(215, 40%, 6%, 0.2);
+    box-shadow: 4px 1px 3px 2px hsla(202, 29%, 72%, 0.067);
 }
 #page > .bg-image {
     height: 100%;
@@ -149,7 +159,7 @@ form button:hover {
     height: 2rem;
     justify-content: center;
     align-items: flex-end;
-    color: #792e2e;
+    color: #f16464;
 }
 
 .flex {

@@ -1,8 +1,10 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Arial, Tahoma, sans-serif;
+    font-family: Calibri, Tahoma, sans-serif;
+    font-size: 2.5rem;
 }
+
 :root {
     font-size: 62.5%;
 }
@@ -12,24 +14,40 @@ body {
 }
 .initial-page-footer {
     border-top: solid #d2d2d2 0.3rem;
-    padding-top: 0.6rem;
+    padding-top: 1.5rem;
 }
 .body-report {
-    padding-top: 15rem;
+    padding-top: 22rem;
 }
 .body-report h1 {
-    margin-bottom: 10rem;
+    margin-bottom: 9rem;
     color: #172b4c;
-    font-size: 3.4rem;
-    font-weight: 510;
+    font-size: 4rem;
+    font-weight: 100;
+}
+.body-report p {
+    text-align: justify;
 }
 
+.description-feature {
+    padding-left: 11rem;
+}
+li {
+    margin-left: 8rem;
+    margin-bottom: 0.3rem;
+    list-style-position: outside;
+    padding-left: 3rem;
+}
 .container-logo-report img {
     margin-bottom: 24rem;
+}
+.feature-container {
+    margin-bottom: 3.8rem;
 }
 
 .initial-page-footer p {
     font-size: 3rem;
     text-align: right;
     padding-right: 9rem;
+    line-height: 0.3rem;
 }

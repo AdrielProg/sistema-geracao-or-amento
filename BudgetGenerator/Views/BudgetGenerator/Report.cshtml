@@ -16,24 +16,32 @@
 </head>
 
 <body>
+    <div class="container-logo-report">
+        <img src="~/images/logo-report.jpg" alt=""></div>
+    <div class="initial-page-footer">
+        <p>DOCUMENTAÇÃO FUNCIONAL DO SISTEMA</p>
+    </div>
+<div class="body-report">
     <h1>@Model.ReportTitle</h1>
-
     @foreach (var feature in Model.Features)
     {
-        <h2>Funcionalidade @featureCounter: @feature.Name</h2>
-        <h3>Serviços</h3>
-        <ul>
-            @foreach (var service in feature.Services)
-            {
-                <li class="services-list">@service.ServiceType - Complexidade: @service.Complexity - Horas: @service.Hours</li>
-            }
-        </ul>
-        <p><strong>Descrição:</strong> @feature.Description</p>
-        <p><strong>Total de Horas da Funcionalidade:</strong> @feature.AmountHours</p>
-
+        List<string> serviceList = new List<string>();
+       <div class="feature-container">
+            <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
+            <ul>    
+                @foreach (var service in feature.Services)
+                {
+                    serviceList.Add($"{service.ServiceType} {service.Complexity}");
+                }
+                    @{string resultString = string.Join(" + ", serviceList);}
+                        <li class="services-list">@resultString</li>
+            </ul>
+            <p class="description-feature">@feature.Description</p>
+       </div>
         featureCounter++;
     }
 
+</div>
     <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
 </body>
 
