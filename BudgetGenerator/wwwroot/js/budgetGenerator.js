@@ -54,10 +54,6 @@ function populateComplexitySelect(
   area,
   serviceType
 ) {
-  console.log(
-    "Populando níveis de complexidade para o tipo de serviço:",
-    serviceType
-  );
   selectElement.innerHTML = '<option value="">Selecione</option>';
   const complexities =
     serviceMatrix[category.toLowerCase()][area.toLowerCase()][
@@ -74,12 +70,9 @@ function populateComplexitySelect(
 }
 
 async function initializeForm() {
-  console.log("Iniciando formulário");
-
   // Carregar matriz de serviços
   const serviceMatrix = await fetchServiceMatrix();
 
-  // Função auxiliar para adicionar campos de funcionalidades
   function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
     const funcionalidadeContainer = document.createElement("div");
     funcionalidadeContainer.className = "feature";
@@ -108,7 +101,6 @@ async function initializeForm() {
       .getElementById("feature-container")
       .appendChild(funcionalidadeContainer);
 
-    // Adicionar evento de adicionar serviço
     funcionalidadeContainer
       .querySelector(".add-service-btn")
       .addEventListener("click", function () {
@@ -120,7 +112,6 @@ async function initializeForm() {
       });
   }
 
-  // Função para adicionar serviços à funcionalidade
   function adicionarServicos(
     funcionalidadeDiv,
     funcionalidadeIndex,
@@ -151,7 +142,7 @@ async function initializeForm() {
           </select>
           </div>
           <div class="flex-col">
-          <label>Tipo de Serviço</label>
+          <label>Serviço</label>
           <select name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].ServiceType" class="serviceTypeSelect" required>
           <option value="">Selecione</option>
           </select>

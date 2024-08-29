@@ -10,12 +10,11 @@ namespace BudgetGenerator.Controllers
     [Route("[controller]")]
     public class BudgetGeneratorController : Controller
     {
-        private readonly MatrixService _matrixService;
+
         private readonly ILogger<BudgetGeneratorController> _logger;
 
         public BudgetGeneratorController(ILogger<BudgetGeneratorController> logger)
         {
-            _matrixService = new MatrixService();
             _logger = logger;
         }
         [HttpGet]
