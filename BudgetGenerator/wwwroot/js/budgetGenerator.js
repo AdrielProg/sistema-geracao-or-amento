@@ -151,7 +151,7 @@ async function initializeForm() {
           </select>
           </div>
           <div class="flex-col">
-          <label>Tipo de Serviço</label>
+          <label>Serviço</label>
           <select name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].ServiceType" class="serviceTypeSelect" required>
           <option value="">Selecione</option>
           </select>
