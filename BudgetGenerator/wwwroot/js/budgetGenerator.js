@@ -82,35 +82,35 @@ async function initializeForm() {
   // Função auxiliar para adicionar campos de funcionalidades
   function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
     const funcionalidadeContainer = document.createElement("div");
-    funcionalidadeContainer.className = "funcionalidade";
+    funcionalidadeContainer.className = "feature";
     funcionalidadeContainer.setAttribute(
       "data-funcionalidade-index",
       funcionalidadeIndex
     );
 
     funcionalidadeContainer.innerHTML = `
-          <h3>Funcionalidade ${funcionalidadeIndex + 1}</h3>
+          <h2>Funcionalidade ${funcionalidadeIndex + 1}</h2>
           <div>
-              <label for="nomeFuncionalidade">Nome da Funcionalidade:</label>
-              <input type="text" name="Features[${funcionalidadeIndex}].Name" required />
+              <label for="nomeFuncionalidade">Nome:</label>
+              <input type="text" name="Features[${funcionalidadeIndex}].Name" required autocomplete="off"/>
           </div>
           <div>
               <label for="descricaoFuncionalidade">Descrição:</label>
-              <textarea name="Features[${funcionalidadeIndex}].Description" rows="3" required></textarea>
+              <textarea name="Features[${funcionalidadeIndex}].Description" rows="3" required autocomplete="off"></textarea>
           </div>
           <div class="servicesContainer" data-service-index="0">
-              <h4>Serviços:</h4>
-              <button type="button" class="addServiceBtn">Adicionar Serviço</button>
+          <button type="button" class="add-service-btn">Adicionar Serviço</button>
+              <h3>Serviços:</h3>
           </div>
       `;
 
     document
-      .getElementById("funcionalidadesContainer")
+      .getElementById("feature-container")
       .appendChild(funcionalidadeContainer);
 
     // Adicionar evento de adicionar serviço
     funcionalidadeContainer
-      .querySelector(".addServiceBtn")
+      .querySelector(".add-service-btn")
       .addEventListener("click", function () {
         adicionarServicos(
           funcionalidadeContainer,
@@ -135,8 +135,7 @@ async function initializeForm() {
     const serviceDiv = document.createElement("div");
     serviceDiv.className = "service";
     serviceDiv.innerHTML = `
-       <div class="service">
-          <div>
+          <div class="flex-col">
               <label>Categoria:</label>
               <select name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].Category" class="categorySelect" required>
                   <option value="">Selecione</option>
@@ -145,41 +144,48 @@ async function initializeForm() {
                   <option value="testes">Testes</option>
               </select>
           </div>
-          <div>
-          <label>Área:</label>
+          <div class="flex-col">
+          <label>Área</label>
           <select name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].Area" class="areaSelect" required>
           <option value="">Selecione</option>
           </select>
           </div>
-          <div>
-          <label>Tipo de Serviço:</label>
+          <div class="flex-col">
+          <label>Tipo de Serviço</label>
           <select name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].ServiceType" class="serviceTypeSelect" required>
           <option value="">Selecione</option>
           </select>
           </div>
-          <div>
-          <label>Complexidade:</label>
+          <div class="flex-col">
+          <label>Complexidade</label>
           <select name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].Complexity" class="complexitySelect" required>
           <option value="">Selecione</option>
           </select>
           </div>
-          <div class="service-hours">
-          <label>Horas:</label>
+          <div class="flex-col">
+          <label>Horas</label>
           <input type="number" name="Features[${funcionalidadeIndex}].Services[${serviceIndex}].Hours" min="1" readonly />
           </div>
-        </div>
           `;
 
-    servicesContainer.appendChild(serviceDiv);
-    servicesContainer.setAttribute("data-service-index", ++serviceIndex);
+    const prevLastService = servicesContainer.querySelector(
+      ".last-added-service"
+    );
+    if (prevLastService) {
+      prevLastService.classList.remove("last-added-service");
+    }
 
+    // Adicionar o novo serviço e marcar como 'last-added-service'
+    servicesContainer.appendChild(serviceDiv);
+    serviceDiv.classList.add("last-added-service");
+
+    servicesContainer.setAttribute("data-service-index", ++serviceIndex);
     const categorySelect = serviceDiv.querySelector(".categorySelect");
     const areaSelect = serviceDiv.querySelector(".areaSelect");
     const serviceTypeSelect = serviceDiv.querySelector(".serviceTypeSelect");
     const complexitySelect = serviceDiv.querySelector(".complexitySelect");
     const hoursInput = serviceDiv.querySelector("input[name$='.Hours']");
 
-    // Preencher áreas quando a categoria for selecionada
     categorySelect.addEventListener("change", function () {
       const selectedCategory = categorySelect.value;
       if (selectedCategory) {
@@ -187,7 +193,6 @@ async function initializeForm() {
       }
     });
 
-    // Preencher tipos de serviço quando a área for selecionada
     areaSelect.addEventListener("change", function () {
       const selectedCategory = categorySelect.value;
       const selectedArea = areaSelect.value;
@@ -201,7 +206,6 @@ async function initializeForm() {
       }
     });
 
-    // Preencher complexidade e horas quando o tipo de serviço for selecionado
     serviceTypeSelect.addEventListener("change", function () {
       const selectedCategory = categorySelect.value;
       const selectedArea = areaSelect.value;
@@ -217,7 +221,6 @@ async function initializeForm() {
       }
     });
 
-    // Definir horas automaticamente quando a complexidade for selecionada
     complexitySelect.addEventListener("change", function () {
       const selectedCategory = categorySelect.value;
       const selectedArea = areaSelect.value;
@@ -238,10 +241,9 @@ async function initializeForm() {
     });
   }
 
-  // Evento de adicionar funcionalidade
   let funcionalidadeIndex = 0;
   document
-    .getElementById("addFuncionalidadeBtn")
+    .getElementById("addFeatureBtn")
     .addEventListener("click", function () {
       adicionarFuncionalidadeCampos(funcionalidadeIndex);
       funcionalidadeIndex++;

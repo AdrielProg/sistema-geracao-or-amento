@@ -1,74 +1,206 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-     font-family: Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Tahoma, sans-serif;
 }
 
 :root {
-    font-size: 62.5%;
-    --color-grey: #a3bdcc;
-    --color-white: #fff;
-    --color-dark-blue: #051523;
-    --color-blue-green: #203243;
-    --color-grey-bg: rgba(209, 218, 207, 0.966);
-    --color-green-logo: #59d856;
+  font-size: 62.5%;
+  --color-grey: #bed6ed;
+  --color-white: #fff;
+  --color-dark-blue: #071724;
+  --color-blue-green: #203243;
+  --color-grey-bg: rgba(209, 218, 207, 0.966);
+  --color-green-logo: #59d856;
 }
 
 body {
-    font-size: 1.6rem;
-    color: var(--color-grey);
-    min-height: 100vh;
-    max-height: auto;
-    background-image: 
-    linear-gradient(to bottom right, var(--color-blue-green) 20%, var(--color-dark-blue) 80%),
-    linear-gradient(to top left, var(--color-grey-bg) 30%, var(--color-green-logo) 100%);
-    font-family: Tahoma, sans-serif;
+  font-size: 1.71rem;
+  color: var(--color-grey);
+  min-height: 100vh;
+  background-image: linear-gradient(
+      to bottom right,
+      var(--color-blue-green) 20%,
+      var(--color-dark-blue) 80%
+    ),
+    linear-gradient(
+      to top left,
+      var(--color-grey-bg) 30%,
+      var(--color-green-logo) 100%
+    );
+  font-family: Tahoma, sans-serif;
 }
-
-
 
 .service {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px; 
-    margin-bottom: 10px; 
-  
-    & label{
-        text-align: center;
-    }
-}
-.main-container{
-    padding: 5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-  
-  label {
-    display: block;
-    font-weight: 600;
+  display: flex;
+  gap: 2.9rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+
+  & label {
+    padding-left: 0.3rem;
   }
-  .service-hours{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+}
+.main-container {
+  padding: 5rem 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-  
-  input, select, textarea {
-    padding: 0.7rem;
-    margin: 0.9rem 0;
-    width: 100%;
-    
+label {
+  display: block;
+  font-weight: 600;
+}
+
+input[type="number"] {
+  width: 11.9rem;
+  height: 3.5rem;
+  text-align: center;
+}
+
+input,
+select,
+textarea {
+  padding: 0.7rem;
+  margin: 0.9rem 0;
+  height: 4rem;
+  background-color: var(--color-grey);
+  border-radius: 0.6rem;
+  color: var(--color-dark-blue);
+  transition: linear 0.3s ease;
+}
+input,
+textarea {
+  font-size: 1.7rem;
+  width: 100%;
+}
+
+select {
+  width: 12.5rem;
+  background-color: var(--color-grey); /* Cor de fundo padrão */
+  color: var(--color-dark-blue); /* Cor do texto */
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--color-dark-blue);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Suaviza a transição de cor */
+}
+
+select:hover {
+  background-color: var(--color-blue-green);
+  color: var(--color-white);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-style: none;
+  box-shadow: none;
+}
+input:-webkit-autofill,
+input:focus,
+input:active {
+  -webkit-text-fill-color: var(--color-dark-blue);
+  outline: none;
+  border-style: none;
+  background-color: var(--color-grey);
+  -webkit-box-shadow: 0 0 0 2rem var(--color-grey) inset;
+}
+
+#tituloRelatorio {
+  width: 100%;
+}
+
+textarea {
+  height: 10rem;
+}
+.report-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+form {
+  width: 95rem;
+  padding: 8rem;
+}
+.report-container h1 {
+  font-weight: 250;
+  text-align: center;
+  font-size: 2.6rem;
+  margin-bottom: 2.1rem;
+}
+.report-container h2 {
+  font-size: 2.1rem;
+  margin-block: 1rem;
+}
+.report-container label {
+  font-weight: 150;
+}
+.feature div {
+  margin-block: 1rem;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+button {
+  appearance: none;
+  height: 4.6rem;
+  width: 20rem;
+  color: #071724;
+  font-size: 1.4rem;
+  font-weight: 560;
+  padding: 0.3rem;
+  border-radius: 1.5rem;
+  background-color: rgba(87, 216, 85, 0.8);
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  bottom: 0.9%;
+  left: 0;
+  & #generateReportBtn {
+    background-color: rgba(190, 214, 237, 0.7);
   }
-  #tituloRelatorio{
-    width: 68rem;
+  & .bg-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-blue-green);
+    border: 0.2rem solid var(--color-grey);
+    border-radius: 0.6rem;
+    gap: 5rem;
+    height: 9rem;
+    width: 50rem;
   }
-  
-  textarea {
-    height: 10rem;
-  }
+}
+
+.add-service-btn {
+  margin-bottom: 2rem;
+}
+
+.last-added-service {
+  background-color: hwb(210 6% 87% / 0.226);
+  width: 100%;
+  border: 0.2rem solid var(--color-grey);
+  border-radius: 0.6rem;
+  box-shadow: 0 4px 8px rgba(19, 33, 43, 0.288);
+  backdrop-filter: blur(0.2rem);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.last-added-service label {
+  font-weight: 400;
+  color: var(--color-white);
+}
