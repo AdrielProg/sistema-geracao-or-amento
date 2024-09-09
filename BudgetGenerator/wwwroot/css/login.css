@@ -14,6 +14,7 @@
   --color-blue-green: #203243;
   --color-grey-bg: rgba(209, 218, 207, 0.966);
   --color-green-logo: #59d856;
+  --color-red: #f16464;
 }
 
 body {
@@ -177,7 +178,7 @@ form button:active {
   margin-top: 1.3rem;
   justify-content: center;
   align-items: flex-end;
-  color: #f16464;
+  color: var(--color-red);
 }
 .nav-container {
   justify-content: space-between;

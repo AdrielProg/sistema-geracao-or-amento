@@ -24,19 +24,19 @@ namespace BudgetGenerator.Controllers
         }
 
         [HttpPost]
-        public IActionResult GenerateReport(ReportInputModel input)
+        public IActionResult GenerateReport(ReportInputModel featureModel)
         {
-            if (input.Features == null || input.Features.Count == 0)
+            if (featureModel.Features == null || featureModel.Features.Count == 0)
             {
                 ModelState.AddModelError("", "Nenhuma funcionalidade foi adicionada.");
-                return View("Index", input);
+                return View("ShowReportPage", featureModel);
             }
 
             // Gera o PDF com os dados fornecidos pelo usuário
             var reportModel = new ReportModel
             {
-                ReportTitle = input.ReportTitle,
-                Features = input.Features
+                ReportTitle = featureModel.ReportTitle,
+                Features = featureModel.Features
             };
 
             return new ViewAsPdf("Report", reportModel)
