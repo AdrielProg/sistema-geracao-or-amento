@@ -22,10 +22,14 @@
                     <input type="text" id="reportTitle" name="ReportTitle" required autocomplete="off" />
                 </div>
                 <div id="feature-container"></div>
+                <input type="hidden" id="formatInput" name="format" value="pdf" />
                 <div class="button-container">
                     <div class="bg-button">
                         <button type="button" id="addFeatureBtn">Adicionar Funcionalidade</button>
-                        <button type="submit" id="generateReportBtn">Exportar PDF</button>
+                        <button type="submit" id="generatePdfButton"
+                            onclick="document.getElementById('formatInput').value = 'pdf';">Exportar PDF</button>
+                        <button type="submit" id="generateDocxButton"
+                            onclick="document.getElementById('formatInput').value = 'docx';">Gerar DOCX</button>
                     </div>
                 </div>
             </form>

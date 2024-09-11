@@ -160,12 +160,11 @@ function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
     .getElementById("feature-container")
     .appendChild(funcionalidadeContainer);
 
-  // Adicionar evento para remover a feature
   funcionalidadeContainer
     .querySelector(".remove-feature-btn")
     .addEventListener("click", function () {
       funcionalidadeContainer.remove();
-      reindexFeaturesAndServices(); // Reindexar após remover a feature
+      reindexFeaturesAndServices();
     });
 
   funcionalidadeContainer
@@ -223,7 +222,6 @@ function adicionarServicos(funcionalidadeDiv, funcionalidadeIndex) {
     </div>
   `;
 
-  // Remove 'last-added-service' do serviço anterior, se existir
   const prevLastService = servicesContainer.querySelector(
     ".last-added-service"
   );
@@ -231,13 +229,10 @@ function adicionarServicos(funcionalidadeDiv, funcionalidadeIndex) {
     prevLastService.classList.remove("last-added-service");
   }
 
-  // Adicionar o novo serviço e marcar como 'last-added-service'
   servicesContainer.appendChild(serviceDiv);
   serviceDiv.classList.add("last-added-service");
-
   servicesContainer.setAttribute("data-service-index", ++serviceIndex);
 
-  // Eventos para popular os selects conforme as seleções
   const categorySelect = serviceDiv.querySelector(".categorySelect");
   const areaSelect = serviceDiv.querySelector(".areaSelect");
   const serviceTypeSelect = serviceDiv.querySelector(".serviceTypeSelect");
@@ -296,12 +291,11 @@ function adicionarServicos(funcionalidadeDiv, funcionalidadeIndex) {
     }
   });
 
-  // Evento para remover o serviço e reindexar
   serviceDiv
     .querySelector(".remove-service-btn")
     .addEventListener("click", function () {
       serviceDiv.remove();
-      reindexLastAddedService(servicesContainer); // Atualiza o 'last-added-service' após remoção
+      reindexLastAddedService(servicesContainer);
       reindexFeaturesAndServices();
     });
 
@@ -346,7 +340,7 @@ document.getElementById("addFeatureBtn").addEventListener("click", function () {
 });
 
 document
-  .getElementById("generateReportBtn")
+  .getElementById("generatePdfButton")
   .addEventListener("click", function () {
     exportarRelatorio();
   });
