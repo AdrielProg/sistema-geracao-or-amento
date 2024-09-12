@@ -1,17 +1,18 @@
 let featuresList = []; // Lista global para armazenar as features e serviços
 let serviceMatrix = {}; // Matriz de horas carregada
 
+// Carrega a matriz de horas ao iniciar a página
 async function fetchServiceMatrix() {
   try {
     const response = await fetch("/data/matriz_horas.json");
-    serviceMatrix = await response.json(); // Salva a matriz no escopo global
+    serviceMatrix = await response.json();
     console.log("Matriz de Horas Carregada:", serviceMatrix);
   } catch (error) {
     console.error("Erro ao carregar a Matriz de Horas:", error);
   }
 }
 
-// Funções para popular os selects dinamicamente
+// Popula os selects dinamicamente
 function populateAreaSelect(selectElement, category) {
   selectElement.innerHTML = '<option value="">Selecione</option>';
   const areas = serviceMatrix[category.toLowerCase()];
@@ -49,6 +50,7 @@ function populateComplexitySelect(selectElement, category, area, serviceType) {
   }
 }
 
+// Atualiza a lista de features e serviços com base nos campos do formulário
 function reindexFeaturesAndServices() {
   const allFeatures = document.querySelectorAll(".feature");
   featuresList = []; // Resetar a lista de features
@@ -129,6 +131,7 @@ function reindexFeaturesAndServices() {
   });
 }
 
+// Função para adicionar funcionalidade
 function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
   const funcionalidadeContainer = document.createElement("div");
   funcionalidadeContainer.className = "feature";
@@ -176,6 +179,7 @@ function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
   reindexFeaturesAndServices();
 }
 
+// Função para adicionar serviços
 function adicionarServicos(funcionalidadeDiv, funcionalidadeIndex) {
   const servicesContainer =
     funcionalidadeDiv.querySelector(".servicesContainer");
@@ -309,7 +313,7 @@ function reindexLastAddedService(servicesContainer) {
     lastService.classList.add("last-added-service");
   }
 }
-
+// Função para exportar o relatório
 function exportarRelatorio() {
   reindexFeaturesAndServices();
   const form = document.getElementById("formReport");
@@ -330,10 +334,10 @@ function exportarRelatorio() {
   hiddenInput.value = JSON.stringify(reportInputModel);
 
   form.appendChild(hiddenInput);
-  console.log(JSON.stringify(reportInputModel));
   form.submit();
 }
 
+// Event listeners para adicionar funcionalidades e gerar relatório
 document.getElementById("addFeatureBtn").addEventListener("click", function () {
   const funcionalidadeIndex = featuresList.length;
   adicionarFuncionalidadeCampos(funcionalidadeIndex);
@@ -341,8 +345,17 @@ document.getElementById("addFeatureBtn").addEventListener("click", function () {
 
 document
   .getElementById("generatePdfButton")
-  .addEventListener("click", function () {
+  .addEventListener("click", function (e) {
+    e.preventDefault(); // Previne o comportamento padrão
     exportarRelatorio();
   });
 
+document
+  .getElementById("generateDocxButton")
+  .addEventListener("click", function (e) {
+    e.preventDefault(); // Previne o comportamento padrão
+    exportarRelatorio();
+  });
+
+// Carrega a matriz de horas ao iniciar
 fetchServiceMatrix();

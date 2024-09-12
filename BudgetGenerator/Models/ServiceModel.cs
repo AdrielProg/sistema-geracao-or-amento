@@ -1,5 +1,4 @@
 
-using BudgetGenerator.Models.Enums;
 
 namespace BudgetGenerator.Models
 {
@@ -8,7 +7,7 @@ namespace BudgetGenerator.Models
         public required string ServiceType { get; set; }
         public string Category { get; set; }
         public string Area { get; set; }
-        public Complexity Complexity { get; set; }
+        public string Complexity { get; set; }
         public int Hours { get; set; }
     }
 }

@@ -1,9 +1,12 @@
+using BudgetGenerator.Services;
+using BudgetGenerator.Services.Implementation;
 using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 
 var app = builder.Build();
