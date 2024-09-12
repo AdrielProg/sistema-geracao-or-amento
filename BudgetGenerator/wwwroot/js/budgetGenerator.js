@@ -328,6 +328,11 @@ function exportarRelatorio() {
     return;
   }
 
+  console.log(
+    "Dados do relatório antes da submissão:",
+    JSON.stringify(reportInputModel, null, 2)
+  );
+
   const hiddenInput = document.createElement("input");
   hiddenInput.type = "hidden";
   hiddenInput.name = "inputModel";

@@ -3,7 +3,14 @@
 @{
     Layout = null;
     var featureCounter = 1;
+
+    // Chamar o método ContarComplexidades do modelo
+    var serviceComplexities = Model.ContarComplexidades();
+
+    // Função para exibir o valor ou espaço em branco
+    Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
 }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,32 +24,227 @@
 
 <body>
     <div class="container-logo-report">
-        <img src="~/images/logo-report.jpg" alt=""></div>
+        <img src="~/images/logo-report.jpg" alt="">
+    </div>
     <div class="initial-page-footer">
         <p>DOCUMENTAÇÃO FUNCIONAL DO SISTEMA</p>
     </div>
-<div class="body-report">
-    <h1>@Model.ReportTitle</h1>
-    @foreach (var feature in Model.Features)
-    {
-        List<string> serviceList = new List<string>();
-       <div class="feature-container">
-            <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
-            <ul>    
-                @foreach (var service in feature.Services)
-                {
-                    serviceList.Add($"{service.ServiceType} {service.Complexity}");
-                }
-                    @{string resultString = string.Join(" + ", serviceList);}
-                        <li class="services-list">@resultString</li>
-            </ul>
-            <p class="description-feature">@feature.Description</p>
-       </div>
-        featureCounter++;
-    }
-    
-</div>
+
+    <div class="body-report">
+        <h1>@Model.ReportTitle</h1>
+
+        @foreach (var feature in Model.Features)
+        {
+            List<string> serviceList = new List<string>();
+            <div class="feature-container">
+                <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
+                <ul>
+                    @foreach (var service in feature.Services)
+                    {
+                        serviceList.Add($"{service.ServiceType} {service.Complexity}");
+                    }
+                    @{
+                        string resultString = string.Join(" + ", serviceList);
+                    }
+                    <li class="services-list">@resultString</li>
+                </ul>
+                <p class="description-feature">@feature.Description</p>
+            </div>
+            featureCounter++;
+        }
+
+        @if (Model.HasOperationServices())
+        {
+            <div class="section-table" align="center">
+                <table class="development-budget-table">
+                    <thead>
+                        <tr>
+                            <th class="title-table-head" colspan="6">Matriz de orçamento para desenvolvimento</th>
+                        </tr>
+                        <tr>
+                            <th class="table-header">Categoria</th>
+                            <th class="table-header">Item</th>
+                            <th class="table-header">Atividade Validadas</th>
+                            <th class="table-header">Simples</th>
+                            <th class="table-header">Médio</th>
+                            <th class="table-header">Complexo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linha para Telas WEB -->
+                        <tr>
+                            <td class="category-colum">
+                                <span class="developement-category">Telas</span>
+                            </td>
+                            <td>
+                                <span class="developement-item">WEB</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de colunas; Filtros Dinâmicos; Paginação; Ordenação.
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Telas_WEB"].Simples)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Telas_WEB"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Telas_WEB"].Complexo)</td>
+                        </tr>
+
+                        <!-- Linha para Relatórios PDF -->
+                        <tr>
+                            <td rowspan="2" class="category-colum">
+                                <span class="developement-category">Relatórios</span>
+                            </td>
+                            <td>
+                                <span class="developement-item">PDF</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de colunas; Quantidade de tabelas
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Relatórios_PDF"].Simples)
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Relatórios_PDF"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Relatórios_PDF"].Complexo)
+                            </td>
+                        </tr>
+
+                        <!-- Linha para Relatórios Excel / Word -->
+                        <tr>
+                            <td>
+                                <span class="developement-item">Excel / Word</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de colunas; Gráficos
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(serviceComplexities["Relatórios_ExcelWord"].Simples)</td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(serviceComplexities["Relatórios_ExcelWord"].Medio)</td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(serviceComplexities["Relatórios_ExcelWord"].Complexo)</td>
+                        </tr>
+
+                        <!-- SQL Categoria -->
+                        <tr>
+                            <td rowspan="6" class="category-colum">
+                                <span class="developement-category">SQL</span>
+                            </td>
+                            <td>
+                                <span class="developement-item">Procedure</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de campos; Quantidade de tabelas
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Procedure"].Simples)
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Procedure"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Procedure"].Complexo)
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="developement-item">JOB</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de tabelas; Quantidade de operações
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_JOB"].Simples)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_JOB"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_JOB"].Complexo)</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="developement-item">Trigger</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de operações
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Trigger"].Simples)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Trigger"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Trigger"].Complexo)</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="developement-item">Função</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de operações
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Função"].Simples)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Função"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Função"].Complexo)</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="developement-item">Scripts</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de operações
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Scripts"].Simples)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Scripts"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Scripts"].Complexo)</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="developement-item">Modelagem</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de campos e quantidade de relacionamentos
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Modelagem"].Simples)
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Modelagem"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["SQL_Modelagem"].Complexo)
+                            </td>
+                        </tr>
+
+                        <!-- API Categoria -->
+                        <tr>
+                            <td class="category-colum">
+                                <span class="developement-category">API</span>
+                            </td>
+                            <td>
+                                <span class="developement-item">Operação</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de campos/Validações
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["API_Operação"].Simples)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["API_Operação"].Medio)</td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["API_Operação"].Complexo)
+                            </td>
+                        </tr>
+
+                        <!-- Serviços Categoria -->
+                        <tr>
+                            <td class="category-colum">
+                                <span class="developement-category">Serviços</span>
+                            </td>
+                            <td>
+                                <span class="developement-item">Console</span>
+                            </td>
+                            <td class="developement-activities">
+                                Quantidade de operações
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Serviços_Console"].Simples)
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Serviços_Console"].Medio)
+                            </td>
+                            <td class="service-complexity">@displayOrEmpty(serviceComplexities["Serviços_Console"].Complexo)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+
     <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
+
 </body>
 
 </html>

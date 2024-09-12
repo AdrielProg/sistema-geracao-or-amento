@@ -1,53 +1,95 @@
 * {
-    margin: 0;
-    padding: 0;
-    font-family: Calibri, Tahoma, sans-serif;
-    font-size: 2.5rem;
+  margin: 0;
+  padding: 0;
+  font-family: Calibri, Tahoma, sans-serif;
+  font-size: 2.5rem;
 }
 
 :root {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 body {
-    font-size: 1.6rem;
-    padding: 5rem;
+  font-size: 1.6rem;
+  padding: 5rem;
 }
 .initial-page-footer {
-    border-top: solid #d2d2d2 0.3rem;
-    padding-top: 1.5rem;
+  border-top: solid #d2d2d2 0.3rem;
+  padding-top: 1.5rem;
 }
 .body-report {
-    padding-top: 22rem;
+  padding-top: 22rem;
 }
 .body-report h1 {
-    margin-bottom: 9rem;
-    color: #172b4c;
-    font-size: 4rem;
-    font-weight: 100;
+  margin-bottom: 9rem;
+  color: #172b4c;
+  font-size: 4rem;
+  font-weight: 100;
 }
 .body-report p {
-    text-align: justify;
+  text-align: justify;
 }
 
 .description-feature {
-    padding-left: 11rem;
+  padding-left: 11rem;
 }
 li {
-    margin-left: 8rem;
-    margin-bottom: 0.3rem;
-    list-style-position: outside;
-    padding-left: 3rem;
+  margin-left: 8rem;
+  margin-bottom: 0.3rem;
+  list-style-position: outside;
+  padding-left: 3rem;
 }
 .container-logo-report img {
-    margin-bottom: 24rem;
+  margin-bottom: 24rem;
 }
 .feature-container {
-    margin-bottom: 3.8rem;
+  margin-bottom: 3.8rem;
 }
 
 .initial-page-footer p {
-    font-size: 3rem;
-    text-align: right;
-    padding-right: 9rem;
-    line-height: 0.3rem;
+  font-size: 3rem;
+  text-align: right;
+  padding-right: 9rem;
+  line-height: 0.3rem;
+}
+
+.section-table {
+  width: 100%;
+  padding: 20px;
+}
+
+.development-budget-table {
+  width: 95%;
+  border-collapse: collapse;
+  background-color: #fff;
+  font-family: Calibri, sans-serif;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.development-budget-table th,
+.development-budget-table td {
+  border: 2px solid #f3f3f3;
+  padding: 10px;
+  text-align: left;
+}
+
+.development-budget-table .title-table-head {
+  background-color: #f3f3f3;
+  font-weight: bold;
+  text-align: center;
+}
+
+.development-budget-table .title-table-head {
+  background-color: #f3f3f3;
+  font-size: 1.2em;
+}
+
+.development-budget-table tbody td {
+  background-color: #fff;
+}
+.development-budget-table .table-header {
+  text-align: center;
+}
+
+.development-budget-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
