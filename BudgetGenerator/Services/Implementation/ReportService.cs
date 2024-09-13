@@ -26,7 +26,9 @@ namespace BudgetGenerator.Services.Implementation
         public MemoryStream GenerateDocx(ReportModel reportModel)
         {
             var memoryStream = new MemoryStream();
-            using (var wordDocument = WordprocessingDocument.Create(memoryStream, WordprocessingDocumentType.Document, true))
+            using (var wordDocument = WordprocessingDocument.Create(memoryStream,
+                                                                    WordprocessingDocumentType.Document,
+                                                                     true))
             {
                 MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
                 mainPart.Document = new Document();

@@ -2,14 +2,13 @@
   margin: 0;
   padding: 0;
   font-family: Calibri, Tahoma, sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.9rem;
 }
 
 :root {
   font-size: 62.5%;
 }
 body {
-  font-size: 1.6rem;
   padding: 5rem;
 }
 .initial-page-footer {
@@ -22,7 +21,7 @@ body {
 .body-report h1 {
   margin-bottom: 9rem;
   color: #172b4c;
-  font-size: 4rem;
+  font-size: 5rem;
   font-weight: 100;
 }
 .body-report p {
@@ -43,6 +42,7 @@ li {
 }
 .feature-container {
   margin-bottom: 3.8rem;
+  font-size: 200rem;
 }
 
 .initial-page-footer p {
@@ -54,42 +54,71 @@ li {
 
 .section-table {
   width: 100%;
-  padding: 20px;
+  padding: 5px;
 }
 
-.development-budget-table {
-  width: 95%;
+.development-budget-table,
+.test-budget-table {
+  width: 100%;
   border-collapse: collapse;
   background-color: #fff;
   font-family: Calibri, sans-serif;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin: 45% 0 37%;
+}
+.test-budget-table {
+  margin-bottom: 10%;
 }
 
 .development-budget-table th,
-.development-budget-table td {
-  border: 2px solid #f3f3f3;
+.development-budget-table td,
+.test-budget-table th,
+.test-budget-table td {
+  border: 4px solid #d2d2d2;
+  background-color: #fff;
+  font-size: 2.5rem;
+  font-weight: 300;
   padding: 10px;
-  text-align: left;
 }
-
-.development-budget-table .title-table-head {
-  background-color: #f3f3f3;
+.developement-category,
+.developement-item {
+  font-size: 2.5rem;
+}
+.development-budget-table .title-table-head,
+.test-budget-table .title-table-head {
+  background-color: #d2d2d2;
   font-weight: bold;
   text-align: center;
+  font-size: 0.9em;
 }
 
-.development-budget-table .title-table-head {
-  background-color: #f3f3f3;
-  font-size: 1.2em;
+.development-budget-table .dev-data,
+.test-budget-table .dev-data {
+  width: 15rem;
 }
-
-.development-budget-table tbody td {
-  background-color: #fff;
+.development-budget-table .developement-activities {
+  width: 40rem;
 }
-.development-budget-table .table-header {
+.category-colum {
+  text-align: center;
+}
+.service-complexity {
   text-align: center;
 }
 
-.development-budget-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.development-budget-table tbody td,
+.test-budget-table tbody td {
+  background-color: #fff;
+}
+.development-budget-table .table-header,
+.test-budget-table .table-header {
+  text-align: center;
+}
+.developer-item {
+  width: 20rem;
+}
+
+.development-budget-table tbody tr:nth-child(even),
+.test-budget-table tbody tr:nth-child(even) {
+  background-color: #d2d2d2;
 }

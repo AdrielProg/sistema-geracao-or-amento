@@ -1,7 +1,6 @@
 let featuresList = []; // Lista global para armazenar as features e serviços
-let serviceMatrix = {}; // Matriz de horas carregada
+let serviceMatrix = {};
 
-// Carrega a matriz de horas ao iniciar a página
 async function fetchServiceMatrix() {
   try {
     const response = await fetch("/data/matriz_horas.json");
@@ -53,7 +52,7 @@ function populateComplexitySelect(selectElement, category, area, serviceType) {
 // Atualiza a lista de features e serviços com base nos campos do formulário
 function reindexFeaturesAndServices() {
   const allFeatures = document.querySelectorAll(".feature");
-  featuresList = []; // Resetar a lista de features
+  featuresList = [];
 
   allFeatures.forEach((featureDiv, featureIndex) => {
     // Atualiza os índices das funcionalidades no DOM
