@@ -28,26 +28,28 @@
 
     <div class="body-report">
         <h1>@Model.ReportTitle</h1>
+        <div class="features-container">
 
-        @foreach (var feature in Model.Features)
-        {
-            List<string> serviceList = new List<string>();
-            <div class="feature-container">
-                <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
-                <ul>
-                    @foreach (var service in feature.Services)
-                    {
-                        serviceList.Add($"{service.ServiceType} {service.Complexity}");
-                    }
-                    @{
-                        string resultString = string.Join(" + ", serviceList);
-                    }
-                    <li class="services-list">@resultString</li>
-                </ul>
-                <p class="description-feature">@feature.Description</p>
-            </div>
-            featureCounter++;
-        }
+            @foreach (var feature in Model.Features)
+            {
+                List<string> serviceList = new List<string>();
+                <div class="feature-container">
+                    <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
+                    <ul>
+                        @foreach (var service in feature.Services)
+                        {
+                            serviceList.Add($"{service.ServiceType} {service.Complexity}");
+                        }
+                        @{
+                            string resultString = string.Join(" + ", serviceList);
+                        }
+                        <li class="services-list">@resultString</li>
+                    </ul>
+                    <p class="description-feature">@feature.Description</p>
+                </div>
+                featureCounter++;
+            }
+        </div>
 
         @if (Model.HasOperationServices())
         {

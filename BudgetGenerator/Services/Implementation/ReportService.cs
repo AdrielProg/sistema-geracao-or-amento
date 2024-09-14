@@ -3,12 +3,11 @@ using Rotativa.AspNetCore;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
-using System.IO; // Para evitar ambiguidade com Path
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing; // Para trabalhar com Bitmap
+
 
 namespace BudgetGenerator.Services.Implementation
 {
@@ -18,8 +17,14 @@ namespace BudgetGenerator.Services.Implementation
         {
             var pdf = new ViewAsPdf("Report", reportModel)
             {
-                FileName = "RelatorioBudgetGenerator.pdf"
+                FileName = "RelatorioBudgetGenerator.pdf",
+                CustomSwitches = "--footer-left \"Rua dos Pracinhas, 1720\\nNúcleo Alpha – Franca/SP – CEP 14403-160\\nCentral PABX: (16) 3409-9514 / 3409-9513\" " +
+                                 "--footer-right \"[page] / [topage]\" " +
+                                 "--footer-font-size \"7\" " +
+                                 "--footer-spacing \"2\" " +
+                                 "--exclude-from-outline "
             };
+
             return pdf.BuildFile(controllerContext).Result;
         }
 

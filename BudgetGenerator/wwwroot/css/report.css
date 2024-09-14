@@ -122,3 +122,13 @@ li {
 .test-budget-table tbody tr:nth-child(even) {
   background-color: #d2d2d2;
 }
+
+.footer {
+  text-align: center;
+  font-size: 10px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #000;
+  padding-top: 5px;
+}
