@@ -16,6 +16,12 @@ namespace BudgetGenerator.Controllers
             _reportService = reportService;
         }
 
+        [HttpGet("Footer")]
+        public IActionResult Footer()
+        {
+            return PartialView("_Footer");  // Ajusta o caminho da view
+        }
+
         [HttpGet]
         public IActionResult ShowReportPage()
         {
@@ -49,5 +55,6 @@ namespace BudgetGenerator.Controllers
             }
             return BadRequest("Formato inválido.");
         }
+
     }
 }

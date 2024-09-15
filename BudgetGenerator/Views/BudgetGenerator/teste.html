@@ -1,66 +1,239 @@
 @model BudgetGenerator.Models.ReportModel
 
 @{
-    Layout = null;
-    var featureCounter = 1;
+Layout = null;
+var featureCounter = 1;
 
-    Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
-}
+Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
+    }
 
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/report.css">
-    <title>Budget Generator</title>
-</head>
-
-<body>
-    <div class="report-cover">
-
-        <div class="container-logo-report" align="center">
-            <img src="~/images/logo-report.jpg" alt="">
-        </div>
-    </div>
-
-    <div class="initial-page-footer">
-        <div class="line-footer">
-            <p>DOCUMENTAÇÃO FUNCIONAL DO SISTEMA</p>
-        </div>
-    </div>
-
-    <div class="body-report">
-        <h1>@Model.ReportTitle</h1>
-        <div class="features-container">
-
-            @foreach (var feature in Model.Features)
-            {
-                List<string> serviceList = new List<string>();
-                <div class="feature-container">
-                    <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
-                    <ul>
-                        @foreach (var service in feature.Services)
-                        {
-                            serviceList.Add($"{service.ServiceType} {service.Complexity}");
-                        }
-                        @{
-                            string resultString = string.Join(" + ", serviceList);
-                        }
-                        <li class="services-list">@resultString</li>
-                    </ul>
-                    <p class="description-feature">@feature.Description</p>
-                </div>
-                featureCounter++;
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="~/css/report.css">
+        <title>Budget Generator</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                font-family: Calibri, Tahoma, sans-serif;
+                font-size: 2.01rem;
             }
+
+            :root {
+                font-size: 62.5%;
+            }
+
+            body {
+                padding: 3rem 1rem 0 1rem;
+            }
+
+            .report-cover {
+                min-height: 105rem;
+                padding-top: 15%;
+            }
+
+            .initial-page-footer {
+                position: relative;
+                height: 5rem;
+                padding-top: 5%;
+                width: 100%;
+            }
+
+            .line-footer {
+                border-top: solid #d2d2d2 0.3rem;
+                width: 100%;
+                position: absolute;
+                bottom: 0%;
+                padding-top: 0.3%;
+            }
+
+            .body-report {
+                padding-top: 20rem;
+            }
+
+            .body-report h1 {
+                margin-bottom: 9rem;
+                margin-left: 7rem;
+                color: #172b4c;
+                font-size: 3.5rem;
+                font-weight: 100;
+            }
+
+            .body-report p {
+                text-align: justify;
+            }
+
+            .description-feature {
+                padding-left: 7rem;
+            }
+
+            li {
+                margin-left: 4rem;
+                margin-bottom: 0.3rem;
+                list-style-position: outside;
+                padding-left: 3rem;
+            }
+
+            .container-logo-report {
+                width: 100%;
+                height: 85rem;
+            }
+
+            .container-logo-report img {
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .feature-container {
+                margin-bottom: 3.8rem;
+                margin-left: 2%;
+                font-size: 16px;
+            }
+
+            .initial-page-footer p {
+                font-size: 3rem;
+                text-align: right;
+                padding-right: 4%;
+            }
+
+            .section-table {
+                width: 100%;
+                padding: 5px;
+            }
+
+            .development-budget-table,
+            .test-budget-table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #fff;
+                font-family: Calibri, sans-serif;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                margin: 45% 0 37%;
+            }
+
+            .test-budget-table {
+                margin-bottom: 10%;
+            }
+
+            .development-budget-table th,
+            .development-budget-table td,
+            .test-budget-table th,
+            .test-budget-table td {
+                border: 4px solid #d2d2d2;
+                background-color: #fff;
+                font-size: 2rem;
+                font-weight: 300;
+                padding: 10px;
+            }
+
+            .developement-category,
+            .developement-item {
+                font-size: 2rem;
+            }
+
+            .development-budget-table .title-table-head,
+            .test-budget-table .title-table-head {
+                background-color: #d2d2d2;
+                font-weight: bold;
+                text-align: center;
+                font-size: 0.7em;
+            }
+
+            .development-budget-table .dev-data,
+            .test-budget-table .dev-data {
+                width: 15rem;
+            }
+
+            .development-budget-table .developement-activities {
+                width: 40rem;
+            }
+
+            .category-colum {
+                text-align: center;
+            }
+
+            .service-complexity {
+                text-align: center;
+            }
+
+            .development-budget-table tbody td,
+            .test-budget-table tbody td {
+                background-color: #fff;
+            }
+
+            .development-budget-table .table-header,
+            .test-budget-table .table-header {
+                text-align: center;
+            }
+
+            .developer-item {
+                width: 20rem;
+            }
+
+            .development-budget-table tbody tr:nth-child(even),
+            .test-budget-table tbody tr:nth-child(even) {
+                background-color: #d2d2d2;
+            }
+
+            .page-break {
+                page-break-before: always;
+                /* Força a quebra de página antes do elemento */
+                display: block;
+                height: 0;
+                visibility: hidden;
+                /* Mantém o elemento invisível, mas força a quebra */
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="report-cover">
+
+            <div class="container-logo-report" align="center">
+                <img src="~/images/logo-report.jpg" alt="">
+            </div>
         </div>
 
+        <div class="initial-page-footer">
+            <div class="line-footer">
+                <p>DOCUMENTAÇÃO FUNCIONAL DO SISTEMA</p>
+            </div>
+        </div>
 
-        <div class="page-break"></div>
+        <div class="body-report">
+            <h1>@Model.ReportTitle</h1>
+            <div class="features-container">
 
-        @if (Model.HasOperationServices())
-        {
+                @foreach (var feature in Model.Features)
+                {
+                List<string> serviceList = new List<string>();
+                        <div class="feature-container">
+                            <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
+                            <ul>
+                                @foreach (var service in feature.Services)
+                                {
+                                serviceList.Add($"{service.ServiceType} {service.Complexity}");
+                                }
+                                @{
+                                string resultString = string.Join(" + ", serviceList);
+                                }
+                                <li class="services-list">@resultString</li>
+                            </ul>
+                            <p class="description-feature">@feature.Description</p>
+                        </div>
+                        featureCounter++;
+                        }
+            </div>
+
+
+            <div class="page-break"></div>
+
+            @if (Model.HasOperationServices())
+            {
             <div class="section-table" align="center">
                 <table class="development-budget-table">
                     <thead>
@@ -90,18 +263,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <!-- Linha para Relatórios PDF -->
@@ -117,18 +290,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <tr>
@@ -140,18 +313,21 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
+                                &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
+                                &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
+                                &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <tr>
@@ -166,18 +342,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <!-- SQL Job -->
@@ -190,18 +366,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <!-- SQL Trigger -->
@@ -214,18 +390,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <!-- SQL Função -->
@@ -238,18 +414,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <!-- SQL Scripts -->
@@ -262,18 +438,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                         <!-- SQL Modelagem -->
@@ -286,18 +462,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
 
@@ -314,18 +490,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
 
@@ -342,27 +518,28 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "operacoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                                .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        }
-        <div class="page-break"></div>
-        @if (Model.HasTestServices())
-        {
+            }
+            <div class="page-break"></div>
+
+            @if(Model.HasTestServices())
+            {
             <div class="section-table" align="center">
                 <table class="test-budget-table">
                     <thead>
@@ -389,18 +566,18 @@
                             <td class="developement
                             <td class=" service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
 
@@ -414,18 +591,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
                         <tr>
@@ -435,18 +612,21 @@
 
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
+                                &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
+                                &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
+                                &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
                         <tr>
@@ -458,18 +638,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
 
@@ -480,18 +660,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
 
@@ -502,18 +682,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
                         <!-- SQL Função -->
@@ -523,18 +703,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
                         <!-- SQL Scripts -->
@@ -544,18 +724,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
                         <!-- SQL Modelagem -->
@@ -565,18 +745,18 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
 
@@ -591,18 +771,18 @@
 
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
 
@@ -616,29 +796,29 @@
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        }
-    </div>
+            }
+        </div>
 
-    <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
+        <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
 
 
-</body>
+    </body>
 
-</html>
+    </html>

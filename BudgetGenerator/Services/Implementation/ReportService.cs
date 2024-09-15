@@ -7,26 +7,38 @@ using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace BudgetGenerator.Services.Implementation
 {
     public class ReportService : IReportService
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public ReportService(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+
+        }
+
         public byte[] GeneratePdf(ReportModel reportModel, ControllerContext controllerContext)
         {
+
+            string footerPath = Path.Combine(_hostingEnvironment.ContentRootPath, "Views", "Shared", "Footer.html");
+
+            string customSwitches = $"--footer-html \"file:///{footerPath}\"";
+
+            // Gerar o PDF usando Rotativa
             var pdf = new ViewAsPdf("Report", reportModel)
             {
                 FileName = "RelatorioBudgetGenerator.pdf",
-                CustomSwitches = "--footer-left \"Rua dos Pracinhas, 1720\\nNúcleo Alpha – Franca/SP – CEP 14403-160\\nCentral PABX: (16) 3409-9514 / 3409-9513\" " +
-                                 "--footer-right \"[page] / [topage]\" " +
-                                 "--footer-font-size \"7\" " +
-                                 "--footer-spacing \"2\" " +
-                                 "--exclude-from-outline "
+                CustomSwitches = customSwitches
             };
 
             return pdf.BuildFile(controllerContext).Result;
         }
+
 
         public MemoryStream GenerateDocx(ReportModel reportModel)
         {
