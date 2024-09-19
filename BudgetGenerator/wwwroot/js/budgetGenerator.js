@@ -142,7 +142,7 @@ function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
   funcionalidadeContainer.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <h2>Funcionalidade ${funcionalidadeIndex + 1}</h2>
-      <button type="button" class="remove-feature-btn">&times;</button>
+      <span class="remove-feature-btn">&times;</span>
     </div>
     <div>
       <label for="nomeFuncionalidade">Nome:</label>

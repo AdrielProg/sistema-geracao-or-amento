@@ -37,11 +37,7 @@ namespace BudgetGenerator.Controllers
                 return View("ShowReportPage", featureModel);
             }
 
-            var reportModel = new ReportModel
-            {
-                ReportTitle = featureModel.ReportTitle,
-                Features = featureModel.Features
-            };
+            var reportModel = _reportService.GenerateReportModel(featureModel);
 
             if (format == "pdf")
             {

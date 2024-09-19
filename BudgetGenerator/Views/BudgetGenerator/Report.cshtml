@@ -39,38 +39,53 @@
             {
                 List<string> serviceList = new List<string>();
                 <div class="feature-container">
-                    <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
+                    <p>Funcionalidade @featureCounter: @feature.Name (@Model.GetBudgetedDevelopmentHours)</p>
                     <ul>
-                        @foreach (var service in feature.Services)
+                        @foreach (var service in feature.Services.Where(s => s.Category.ToLower() != "testes"))
                         {
                             serviceList.Add($"{service.ServiceType} {service.Complexity}");
                         }
-                        @{
+                        @if (serviceList.Any())
+                        {
                             string resultString = string.Join(" + ", serviceList);
+                            <li class="services-list">@resultString</li>
                         }
-                        <li class="services-list">@resultString</li>
                     </ul>
                     <p class="description-feature">@feature.Description</p>
                 </div>
                 featureCounter++;
             }
         </div>
-
-
         <div class="page-break"></div>
-
         @if (Model.HasOperationServices())
         {
             <div class="section-table" align="center">
                 <table class="development-budget-table">
                     <thead>
                         <tr>
-                            <th class="title-table-head" colspan="6">Matriz de orçamento para desenvolvimento</th>
+                            <th class="title-table-head" colspan="10">Matriz de orçamento para desenvolvimento</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th colspan="3" class="text-head">
+                                <p>Valores de referência</p>
+                                <p>(Horas)</p>
+                            </th>
+                            <th colspan="3" class="text-head">
+                                <p>Operações do projeto</p>
+                                <p>(Quantidade)</p>
+                            </th>
+                            <th colspan="2" rowspan="2" class="text-head">
+                                <p>Total</p>
+                                <p>(Horas)</p>
+                            </th>
                         </tr>
                         <tr>
                             <th class="table-header">Categoria</th>
                             <th class="table-header">Item</th>
-                            <th class="table-header">Atividade Validadas</th>
+                            <th class="table-header">Simples</th>
+                            <th class="table-header">Médio</th>
+                            <th class="table-header">Complexo</th>
                             <th class="table-header">Simples</th>
                             <th class="table-header">Médio</th>
                             <th class="table-header">Complexo</th>
@@ -85,8 +100,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">WEB</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de colunas; Filtros Dinâmicos; Paginação; Ordenação.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -102,6 +123,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "telas", "web")
                             </td>
                         </tr>
                         <!-- Linha para Relatórios PDF -->
@@ -112,8 +136,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">PDF</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de colunas; Quantidade de tabelas.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.pdf.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.pdf.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.pdf.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -129,14 +159,23 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "relatorios", "pdf")
                             </td>
                         </tr>
                         <tr>
                             <td class="dev-data">
                                 <p class="developement-item">Excel / Word</p>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de colunas; Gráficos.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.excel_word.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.excel_word.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.excel_word.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -152,6 +191,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "relatorios", "excel_word")
                             </td>
                         </tr>
                         <tr>
@@ -161,8 +203,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">Procedure</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de campos; Quantidade de tabelas.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.procedure.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.procedure.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.procedure.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -178,6 +226,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "procedure")
                             </td>
                         </tr>
                         <!-- SQL Job -->
@@ -185,8 +236,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">JOB</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de tabelas; Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.job.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.job.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.job.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -202,6 +259,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "job")
                             </td>
                         </tr>
                         <!-- SQL Trigger -->
@@ -209,8 +269,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">Trigger</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.trigger.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.trigger.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.trigger.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -227,14 +293,22 @@
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "trigger")
+                            </td>
                         </tr>
-                        <!-- SQL Função -->
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Função</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.funcao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.funcao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.funcao.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -251,14 +325,23 @@
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "funcao")
+                            </td>
                         </tr>
-                        <!-- SQL Scripts -->
+
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Scripts</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.scripts.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.scripts.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.scripts.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -274,6 +357,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "scripts")
                             </td>
                         </tr>
                         <!-- SQL Modelagem -->
@@ -281,8 +367,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">Modelagem</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.modelagem.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.modelagem.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.modelagem.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -298,6 +390,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "modelagem")
                             </td>
                         </tr>
 
@@ -309,8 +404,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">Operação</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de campos/Validações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.api.operacao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.api.operacao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.api.operacao.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -327,9 +428,10 @@
                                          .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "api", "operacao")
+                            </td>
                         </tr>
-
-                        <!-- Serviços Console -->
                         <tr>
                             <td class="category-colum">
                                 <span class="developement-category">Serviços</span>
@@ -337,8 +439,14 @@
                             <td class="dev-data">
                                 <span class="developement-item">Console</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.servicos.console.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.servicos.console.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.servicos.console.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -354,20 +462,39 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "servicos", "console")
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         }
-        <div class="page-break"></div>
-        @if (Model.HasTestServices())
+        @if (Model.HasIntegrationServices())
         {
+            <div class="page-break"></div>
             <div class="section-table" align="center">
-                <table class="test-budget-table">
+                <table class="integration-budget-table">
                     <thead>
                         <tr>
-                            <th class="title-table-head" colspan="5">Matriz de orçamento para Testes</th>
+                            <th class="title-table-head" colspan="10">Matriz de orçamento para desenvolvimento (Integração
+                                Multiempresa)</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th colspan="3" class="text-head">
+                                <p>Valores de referência</p>
+                                <p>(Horas)</p>
+                            </th>
+                            <th colspan="3" class="text-head">
+                                <p>Operações do projeto</p>
+                                <p>(Quantidade)</p>
+                            </th>
+                            <th colspan="2" rowspan="2" class="text-head">
+                                <p>Total</p>
+                                <p>(Horas)</p>
+                            </th>
                         </tr>
                         <tr>
                             <th class="table-header">Categoria</th>
@@ -375,10 +502,12 @@
                             <th class="table-header">Simples</th>
                             <th class="table-header">Médio</th>
                             <th class="table-header">Complexo</th>
+                            <th class="table-header">Simples</th>
+                            <th class="table-header">Médio</th>
+                            <th class="table-header">Complexo</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Linha para Telas WEB -->
                         <tr>
                             <td class="category-colum">
                                 <span class="developement-category">Telas</span>
@@ -386,25 +515,34 @@
                             <td class="dev-data">
                                 <span class="developement-item">WEB</span>
                             </td>
-                            <td class="developement
-                            <td class=" service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.telas.web.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.telas.web.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.telas.web.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "telas", "web")
                             </td>
                         </tr>
-
-                        <!-- Linha para Relatórios PDF -->
                         <tr>
                             <td rowspan="2" class="category-colum">
                                 <span class="developement-category">Relatórios</span>
@@ -412,41 +550,64 @@
                             <td class="dev-data">
                                 <span class="developement-item">PDF</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.relatorios.pdf.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.relatorios.pdf.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.relatorios.pdf.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "relatorios", "pdf")
                             </td>
                         </tr>
                         <tr>
                             <td class="dev-data">
                                 <p class="developement-item">Excel / Word</p>
                             </td>
-
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.relatorios.excel_word.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.relatorios.excel_word.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.relatorios.excel_word.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "relatorios", "excel_word")
                             </td>
                         </tr>
                         <tr>
@@ -456,106 +617,163 @@
                             <td class="dev-data">
                                 <span class="developement-item">Procedure</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.procedure.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.procedure.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.procedure.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "sql", "procedure")
                             </td>
                         </tr>
-
                         <!-- SQL Job -->
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">JOB</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.job.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.job.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.job.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "sql", "job")
                             </td>
                         </tr>
-
                         <!-- SQL Trigger -->
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Trigger</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.trigger.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.trigger.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.trigger.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "sql", "trigger")
                             </td>
                         </tr>
-                        <!-- SQL Função -->
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Função</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.funcao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.funcao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.funcao.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "sql", "funcao")
                             </td>
                         </tr>
-                        <!-- SQL Scripts -->
+
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Scripts</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.scripts.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.scripts.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.scripts.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "sql", "scripts")
                             </td>
                         </tr>
                         <!-- SQL Modelagem -->
@@ -563,24 +781,34 @@
                             <td class="dev-data">
                                 <span class="developement-item">Modelagem</span>
                             </td>
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.modelagem.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.modelagem.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.sql.modelagem.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "sql", "modelagem")
                             </td>
                         </tr>
-
-                        <!-- API Operação -->
                         <tr>
                             <td class="category-colum">
                                 <span class="developement-category">Api</span>
@@ -588,25 +816,34 @@
                             <td class="dev-data">
                                 <span class="developement-item">Operação</span>
                             </td>
-
-                            <td class="service-complexity">
-                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
-                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.api.operacao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.api.operacao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.api.operacao.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
-                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "api", "operacao")
                             </td>
                         </tr>
-
-                        <!-- Serviços Console -->
                         <tr>
                             <td class="category-colum">
                                 <span class="developement-category">Serviços</span>
@@ -614,6 +851,426 @@
                             <td class="dev-data">
                                 <span class="developement-item">Console</span>
                             </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.servicos.console.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.servicos.console.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("integracoes.servicos.console.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "integracoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("integracoes", "servicos", "console")
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+        @if (Model.HasTestServices())
+        {
+            <div class="page-break"></div>
+            <div class="section-table" align="center">
+                <table class="test-budget-table">
+                    <thead>
+                        <tr>
+                            <th class="title-table-head" colspan="10">Matriz de orçamento para Testes</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th colspan="3" class="text-head">
+                                <p>Valores de referência</p>
+                                <p>(Horas)</p>
+                            </th>
+                            <th colspan="3" class="text-head">
+                                <p>Operações do projeto</p>
+                                <p>(Quantidade)</p>
+                            </th>
+                            <th colspan="2" rowspan="2" class="text-head">
+                                <p>Total</p>
+                                <p>(Horas)</p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="table-header">Categoria</th>
+                            <th class="table-header">Item</th>
+                            <th class="table-header">Simples</th>
+                            <th class="table-header">Médio</th>
+                            <th class="table-header">Complexo</th>
+                            <th class="table-header">Simples</th>
+                            <th class="table-header">Médio</th>
+                            <th class="table-header">Complexo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="category-colum">
+                                <span class="developement-category">Telas</span>
+                            </td>
+                            <td class="dev-data">
+                                <span class="developement-item">WEB</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.telas.web.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.telas.web.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.telas.web.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "telas", "web")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" class="category-colum">
+                                <span class="developement-category">Relatórios</span>
+                            </td>
+                            <td class="dev-data">
+                                <span class="developement-item">PDF</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.relatorios.pdf.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.relatorios.pdf.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.relatorios.pdf.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "relatorios", "pdf")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dev-data">
+                                <p class="developement-item">Excel / Word</p>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.relatorios.excel_word.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.relatorios.excel_word.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.relatorios.excel_word.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "relatorios", "excel_word")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6" class="category-colum">
+                                <span class="developement-category">SQL</span>
+                            </td>
+                            <td class="dev-data">
+                                <span class="developement-item">Procedure</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.procedure.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.procedure.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.procedure.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "sql", "procedure")
+                            </td>
+                        </tr>
+                        <!-- SQL Job -->
+                        <tr>
+                            <td class="dev-data">
+                                <span class="developement-item">JOB</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.job.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.job.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.job.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "sql", "job")
+                            </td>
+                        </tr>
+                        <!-- SQL Trigger -->
+                        <tr>
+                            <td class="dev-data">
+                                <span class="developement-item">Trigger</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.trigger.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.trigger.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.trigger.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "sql", "trigger")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dev-data">
+                                <span class="developement-item">Função</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.funcao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.funcao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.funcao.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "sql", "funcao")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="dev-data">
+                                <span class="developement-item">Scripts</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.scripts.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.scripts.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.scripts.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "sql", "scripts")
+                            </td>
+                        </tr>
+                        <!-- SQL Modelagem -->
+                        <tr>
+                            <td class="dev-data">
+                                <span class="developement-item">Modelagem</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.modelagem.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.modelagem.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.sql.modelagem.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "sql", "modelagem")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="category-colum">
+                                <span class="developement-category">Api</span>
+                            </td>
+                            <td class="dev-data">
+                                <span class="developement-item">Operação</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.api.operacao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.api.operacao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.api.operacao.complexo.horas")
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                         s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                         s.Complexity.ToLower() == "medio" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="service-complexity">
+                                @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
+                                         .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
+                                         s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "api", "operacao")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="category-colum">
+                                <span class="developement-category">Serviços</span>
+                            </td>
+                            <td class="dev-data">
+                                <span class="developement-item">Console</span>
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.servicos.console.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.servicos.console.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("testes.servicos.console.complexo.horas")
+                            </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
@@ -628,6 +1285,9 @@
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                          .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
                                          s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "testes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("testes", "servicos", "console")
                             </td>
                         </tr>
                     </tbody>
@@ -635,10 +1295,28 @@
             </div>
         }
     </div>
-
-    <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
-
-
+    <table class="table-resume-report-hours">
+        <tr>
+            <td class="header-td">Total de Horas Análise e Levantamento:</td>
+            <td>@Model.AnalysisHours horas</td>
+        </tr>
+        <tr>
+            <td class="header-td">Total de Horas Desenvolvimento:</td>
+            <td>@Model.GetBudgetedDevelopmentHours horas</td>
+        </tr>
+        <tr>
+            <td class="header-td">Total de Horas Testes:</td>
+            <td>@Model.GetTotalTestHours horas</td>
+        </tr>
+        <tr>
+            <td class="header-td">Total de Horas Previstas para Homologação e Acompanhamento em Produção:</td>
+            <td>Apontamento</td>
+        </tr>
+        <tr>
+            <td class="header-td">Total Geral:</td>
+            <td>@Model.GetTotalReportHours horas</td>
+        </tr>
+    </table>
 </body>
 
 </html>

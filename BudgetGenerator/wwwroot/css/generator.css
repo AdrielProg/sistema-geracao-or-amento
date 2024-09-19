@@ -9,7 +9,7 @@
 
 :root {
   font-size: 62.5%;
-  --color-grey: #bed6ed;
+  --color-grey: rgb(191, 215, 237);
   --color-white: #fff;
   --color-dark-blue: #071724;
   --color-blue-green: #203243;
@@ -22,16 +22,12 @@ body {
   font-size: 1.6rem;
   color: var(--color-grey);
   min-height: 100vh;
-  background-image: linear-gradient(
-      to bottom right,
+  background-image: linear-gradient(to bottom right,
       var(--color-blue-green) 20%,
-      var(--color-dark-blue) 80%
-    ),
-    linear-gradient(
-      to top left,
+      var(--color-dark-blue) 80%),
+    linear-gradient(to top left,
       var(--color-grey-bg) 30%,
-      var(--color-green-logo) 100%
-    );
+      var(--color-green-logo) 100%);
   font-family: Tahoma, sans-serif;
   position: relative;
 }
@@ -65,6 +61,7 @@ body::before {
     padding-left: 0.3rem;
   }
 }
+
 .main-container {
   display: flex;
   justify-content: center;
@@ -96,6 +93,7 @@ textarea {
   color: var(--color-dark-blue);
   transition: linear 0.3s ease;
 }
+
 input,
 textarea {
   font-size: 1.7rem;
@@ -124,6 +122,7 @@ select:focus {
   border-style: none;
   box-shadow: none;
 }
+
 input:-webkit-autofill,
 input:focus,
 input:active {
@@ -141,6 +140,7 @@ input:active {
 textarea {
   height: 10rem;
 }
+
 .report-container {
   width: 55%;
   backdrop-filter: blur(0.5rem);
@@ -151,29 +151,36 @@ textarea {
   background-color: hsla(0, 0%, 0%, 0.329);
   box-shadow: 4px 1px 10px 10px rgba(4, 10, 11, 0.342);
 }
+
 form {
-  padding: 6.9rem;
+  padding: 6.9rem 5%;
 }
+
 .report-container h1 {
   font-weight: 250;
   text-align: center;
   font-size: 2.6rem;
   margin-bottom: 2.1rem;
 }
+
 h2 {
   font-size: 2.1rem;
   margin: 3.3rem 0 0.8rem 0;
 }
+
 .report-container label {
   font-weight: 150;
 }
+
 .feature div {
   margin-block: 1rem;
 }
+
 .flex-col {
   display: flex;
   flex-direction: column;
 }
+
 button {
   appearance: none;
   height: 4.6rem;
@@ -184,50 +191,59 @@ button {
   padding: 0.3rem;
   cursor: pointer;
   border-radius: 1.5rem;
-  background-color: rgba(87, 216, 85, 0.8);
+  border: solid 0.18rem var(--color-dark-blue);
+  box-shadow: 1px 1px 1px 1px rgba(82, 224, 46, 0.288);
+  background-color: rgba(87, 216, 85, 0.856);
 }
+
 .button-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   margin-top: 3rem;
   width: 100%;
-  & #generateReportBtn {
+
+  & #generatePdfButton,
+  #generateDocxButton {
     background-color: var(--color-grey);
+    box-shadow: 1px 1px 1px 1px rgb(191, 215, 237, 0.2);
   }
+
   & .bg-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-blue-green);
-    border: 0.2rem solid var(--color-grey);
-    border-radius: 0.6rem;
-    gap: 6%;
+    gap: 3%;
     height: 9rem;
-    width: 50rem;
+    width: 65%;
   }
 }
 
 .add-service-btn {
   margin-bottom: 2rem;
 }
+
 .service .remove-btn-container {
   padding-top: 6px;
   height: 100%;
   margin-bottom: 0;
 }
+
 .service .remove-btn-container .remove-service-btn {
   width: 100px;
   height: 50px;
   background-color: #bed6ed;
 }
+
 .remove-feature-btn {
   color: var(--color-grey);
+  cursor: pointer;
   background: none;
   border: none;
   font-size: 2rem;
   width: 2.5rem;
 }
+
 .remove-feature-btn:hover {
   color: var(--color-red);
 }
@@ -258,6 +274,20 @@ select {
   transition: linear 0.3s ease;
   width: 11.5rem;
 }
+
 select option:hover {
   background-color: #add8e6;
+}
+
+.title-hours-container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  align-items: end;
+  justify-content: center;
+  width: 100%;
+  gap: 5%;
+}
+
+.hours-container input[type="number"] {
+  width: 100%;
 }

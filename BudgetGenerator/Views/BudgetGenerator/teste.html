@@ -20,7 +20,7 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                 margin: 0;
                 padding: 0;
                 font-family: Calibri, Tahoma, sans-serif;
-                font-size: 2.01rem;
+                font-size: 1.949rem;
             }
 
             :root {
@@ -47,19 +47,19 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                 border-top: solid #d2d2d2 0.3rem;
                 width: 100%;
                 position: absolute;
-                bottom: 0%;
+                bottom: -2%;
                 padding-top: 0.3%;
             }
 
             .body-report {
-                padding-top: 20rem;
+                padding-top: 14rem;
             }
 
             .body-report h1 {
-                margin-bottom: 9rem;
-                margin-left: 7rem;
+                margin-bottom: 7.5rem;
+                margin-left: 4.5rem;
                 color: #172b4c;
-                font-size: 3.5rem;
+                font-size: 2.9rem;
                 font-weight: 100;
             }
 
@@ -68,14 +68,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
             }
 
             .description-feature {
-                padding-left: 7rem;
+                padding-left: 6.2rem;
             }
 
             li {
-                margin-left: 4rem;
+                margin-left: 5.1rem;
                 margin-bottom: 0.3rem;
                 list-style-position: outside;
-                padding-left: 3rem;
+                padding-left: 1.28rem;
             }
 
             .container-logo-report {
@@ -95,9 +95,10 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
             }
 
             .initial-page-footer p {
-                font-size: 3rem;
+                font-size: 2.5rem;
                 text-align: right;
-                padding-right: 4%;
+                padding-right: 8.5%;
+                margin-top: 2%;
             }
 
             .section-table {
@@ -106,28 +107,37 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
             }
 
             .development-budget-table,
-            .test-budget-table {
+            .test-budget-table,
+            .table-resume-report-hours {
                 width: 100%;
                 border-collapse: collapse;
                 background-color: #fff;
                 font-family: Calibri, sans-serif;
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                margin: 45% 0 37%;
+                margin: 7% 0 0 0;
             }
 
             .test-budget-table {
-                margin-bottom: 10%;
+                margin-bottom: 5%;
             }
 
             .development-budget-table th,
             .development-budget-table td,
             .test-budget-table th,
-            .test-budget-table td {
-                border: 4px solid #d2d2d2;
+            .test-budget-table td,
+            .table-resume-report-hours td,
+            .table-resume-report-hours th {
+                border: 1px solid #d2d2d2;
                 background-color: #fff;
-                font-size: 2rem;
+                font-size: 1.8rem;
                 font-weight: 300;
                 padding: 10px;
+            }
+
+            .developement-reference-hour,
+            .total-value,
+            .development-budget-table .text-head p {
+                text-align: center;
             }
 
             .developement-category,
@@ -181,11 +191,13 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
 
             .page-break {
                 page-break-before: always;
-                /* Força a quebra de página antes do elemento */
                 display: block;
                 height: 0;
                 visibility: hidden;
-                /* Mantém o elemento invisível, mas força a quebra */
+            }
+
+            .table-resume-report-hours .table-resume-report-hours .header-td {
+                font-weight: 700;
             }
         </style>
     </head>
@@ -212,38 +224,55 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                 {
                 List<string> serviceList = new List<string>();
                         <div class="feature-container">
-                            <p>Funcionalidade @featureCounter: @feature.Name (@feature.AmountHours Horas)</p>
+                            <p>Funcionalidade @featureCounter: @feature.Name (@Model.GetBudgetedDevelopmentHours)</p>
                             <ul>
-                                @foreach (var service in feature.Services)
+                                @foreach (var service in feature.Services.Where(s => s.Category.ToLower() == "operacao"
+                                ||
+                                s.Category.ToLower() == "integracao"))
                                 {
                                 serviceList.Add($"{service.ServiceType} {service.Complexity}");
                                 }
-                                @{
+                                @if (serviceList.Any())
+                                {
                                 string resultString = string.Join(" + ", serviceList);
-                                }
                                 <li class="services-list">@resultString</li>
+                                }
                             </ul>
                             <p class="description-feature">@feature.Description</p>
                         </div>
                         featureCounter++;
                         }
             </div>
-
-
             <div class="page-break"></div>
-
             @if (Model.HasOperationServices())
             {
             <div class="section-table" align="center">
                 <table class="development-budget-table">
                     <thead>
                         <tr>
-                            <th class="title-table-head" colspan="6">Matriz de orçamento para desenvolvimento</th>
+                            <th class="title-table-head" colspan="10">Matriz de orçamento para desenvolvimento</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th colspan="3" class="text-head">
+                                <p>Valores de referência</p>
+                                <p>(Horas)</p>
+                            </th>
+                            <th colspan="3" class="text-head">
+                                <p>Operações do projeto</p>
+                                <p>(Quantidade)</p>
+                            </th>
+                            <th colspan="2" rowspan="2" class="text-head">
+                                <p>Total</p>
+                                <p>(Horas)</p>
+                            </th>
                         </tr>
                         <tr>
                             <th class="table-header">Categoria</th>
                             <th class="table-header">Item</th>
-                            <th class="table-header">Atividade Validadas</th>
+                            <th class="table-header">Simples</th>
+                            <th class="table-header">Médio</th>
+                            <th class="table-header">Complexo</th>
                             <th class="table-header">Simples</th>
                             <th class="table-header">Médio</th>
                             <th class="table-header">Complexo</th>
@@ -258,8 +287,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">WEB</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de colunas; Filtros Dinâmicos; Paginação; Ordenação.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -275,6 +310,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "telas", "web")
                             </td>
                         </tr>
                         <!-- Linha para Relatórios PDF -->
@@ -285,8 +323,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">PDF</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de colunas; Quantidade de tabelas.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.pdf.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.pdf.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.pdf.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -302,14 +346,23 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "pdf" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "relatorios", "pdf")
                             </td>
                         </tr>
                         <tr>
                             <td class="dev-data">
                                 <p class="developement-item">Excel / Word</p>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de colunas; Gráficos.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.excel_word.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.excel_word.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.relatorios.excel_word.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -328,6 +381,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 .Count(s => s.Area.ToLower() == "relatorios" && s.ServiceType.ToLower() == "excel_word"
                                 &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "relatorios", "excel_word")
                             </td>
                         </tr>
                         <tr>
@@ -337,8 +393,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">Procedure</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de campos; Quantidade de tabelas.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.procedure.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.procedure.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.procedure.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -354,6 +416,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "procedure" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "procedure")
                             </td>
                         </tr>
                         <!-- SQL Job -->
@@ -361,8 +426,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">JOB</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de tabelas; Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.job.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.job.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.job.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -378,6 +449,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "job" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "job")
                             </td>
                         </tr>
                         <!-- SQL Trigger -->
@@ -385,8 +459,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">Trigger</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.trigger.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.trigger.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.trigger.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -403,14 +483,22 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "trigger" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "trigger")
+                            </td>
                         </tr>
-                        <!-- SQL Função -->
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Função</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.funcao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.funcao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.funcao.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -427,14 +515,23 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "funcao" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "funcao")
+                            </td>
                         </tr>
-                        <!-- SQL Scripts -->
+
                         <tr>
                             <td class="dev-data">
                                 <span class="developement-item">Scripts</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.scripts.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.scripts.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.scripts.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -450,6 +547,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "scripts" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "scripts")
                             </td>
                         </tr>
                         <!-- SQL Modelagem -->
@@ -457,8 +557,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">Modelagem</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.modelagem.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.modelagem.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.sql.modelagem.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -474,6 +580,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "sql" && s.ServiceType.ToLower() == "modelagem" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "sql", "modelagem")
                             </td>
                         </tr>
 
@@ -485,8 +594,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">Operação</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de campos/Validações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.api.operacao.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.api.operacao.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.api.operacao.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -502,6 +617,9 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "api" && s.ServiceType.ToLower() == "operacao" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
+                            </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "api", "operacao")
                             </td>
                         </tr>
 
@@ -513,8 +631,14 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                             <td class="dev-data">
                                 <span class="developement-item">Console</span>
                             </td>
-                            <td class="developement-activities">
-                                Quantidade de operações.
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.servicos.console.facil.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.servicos.console.medio.horas")
+                            </td>
+                            <td class="developement-reference-hour">
+                                @Model.ReferenceMatrix.SelectToken("operacoes.servicos.console.complexo.horas")
                             </td>
                             <td class="service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
@@ -531,15 +655,18 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 .Count(s => s.Area.ToLower() == "servicos" && s.ServiceType.ToLower() == "console" &&
                                 s.Complexity.ToLower() == "complexo" && s.Category.ToLower() == "operacoes"))
                             </td>
+                            <td class="total-value">
+                                @Model.CalculateTotalHoursPerItem("operacoes", "servicos", "console")
+                            </td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
             }
-            <div class="page-break"></div>
-
-            @if(Model.HasTestServices())
+            @if (Model.HasTestServices())
             {
+            <div class="page-break"></div>
             <div class="section-table" align="center">
                 <table class="test-budget-table">
                     <thead>
@@ -564,7 +691,7 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
                                 <span class="developement-item">WEB</span>
                             </td>
                             <td class="developement
-                            <td class=" service-complexity">
+                                <td class=" service-complexity">
                                 @displayOrEmpty(Model.Features.SelectMany(f => f.Services)
                                 .Count(s => s.Area.ToLower() == "telas" && s.ServiceType.ToLower() == "web" &&
                                 s.Complexity.ToLower() == "facil" && s.Category.ToLower() == "testes"))
@@ -815,8 +942,38 @@ Func<int, string> displayOrEmpty = value => value > 0 ? value.ToString() : "";
             </div>
             }
         </div>
+        <table class="table-resume-report-hours">
+            <tr>
+                <td class="header-td">Total de Horas Análise e Levantamento:</td>
+                <td>@Model.AnalysisHours horas</td>
+            </tr>
+            <tr>
+                <td class="header-td">Total de Horas Desenvolvimento:</td>
+                <td>@Model.GetBudgetedDevelopmentHours horas</td>
+            </tr>
+            <tr>
+                <td class="header-td">Total de Horas Testes:</td>
+                <td>@Model.GetTotalTestHours horas</td>
+            </tr>
+            <tr>
+                <td class="header-td">Total de Horas Previstas para Homologação e Acompanhamento em Produção:</td>
+                <td>Apontamento</td>
+            </tr>
+            <tr>
+                <td class="header-td">Total Geral:</td>
+                <td>@Model.GetTotalReportHours horas</td>
+            </tr>
+            <tr>
+                <td class="header-td">teste:</td>
+                <td class="service-complexity">
+                    @Model.ReferenceMatrix.SelectToken("operacoes.telas.web.facil.horas")
+                </td>
+            </tr>
+        </table>
 
-        <p><strong>Total de Horas do Projeto:</strong> @Model.BudgetedHours</p>
+
+
+    </body>
 
 
     </body>

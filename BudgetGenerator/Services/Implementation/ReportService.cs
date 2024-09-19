@@ -7,8 +7,7 @@ using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Hosting.Server;
+using Newtonsoft.Json.Linq;
 
 namespace BudgetGenerator.Services.Implementation
 {
@@ -29,7 +28,7 @@ namespace BudgetGenerator.Services.Implementation
 
             string customSwitches = $"--footer-html \"file:///{footerPath}\"";
 
-            // Gerar o PDF usando Rotativa
+
             var pdf = new ViewAsPdf("Report", reportModel)
             {
                 FileName = "RelatorioBudgetGenerator.pdf",
@@ -38,6 +37,32 @@ namespace BudgetGenerator.Services.Implementation
 
             return pdf.BuildFile(controllerContext).Result;
         }
+        public JObject LoadReferenceMatrix()
+        {
+            string matrixFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", "matriz_horas.json");
+            string jsonContent = File.ReadAllText(matrixFilePath);
+
+
+            JObject referenceMatrix = JObject.Parse(jsonContent);
+
+            return referenceMatrix;
+        }
+
+        public ReportModel GenerateReportModel(ReportInputModel featureModel)
+        {
+            var referenceMatrix = LoadReferenceMatrix();
+
+            var reportModel = new ReportModel
+            {
+                ReportTitle = featureModel.ReportTitle,
+                Features = featureModel.Features,
+                AnalysisHours = featureModel.AnalysisHours,
+                ReferenceMatrix = referenceMatrix
+            };
+
+            return reportModel;
+        }
+
 
 
         public MemoryStream GenerateDocx(ReportModel reportModel)
@@ -118,7 +143,7 @@ namespace BudgetGenerator.Services.Implementation
 
             // Total de horas do projeto
             var totalHoursParagraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph(
-                new Run(new Text($"Total de Horas do Projeto: {reportModel.BudgetedHours}"))
+                new Run(new Text($"Total de Horas do Projeto: {reportModel.GetBudgetedDevelopmentHours}"))
             );
             totalHoursParagraph.ParagraphProperties = new ParagraphProperties
             {

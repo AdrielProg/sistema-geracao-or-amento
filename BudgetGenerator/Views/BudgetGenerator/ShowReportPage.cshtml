@@ -17,9 +17,16 @@
         <div class="report-container">
             <form asp-action="GenerateReport" method="post" id="formReport">
                 <h1>Budget Generator</h1>
-                <div>
-                    <label for="reportTitle">Título do Relatório:</label>
-                    <input type="text" id="reportTitle" name="ReportTitle" required autocomplete="off" />
+                <div class="title-hours-container">
+                    <div class="title-container">
+                        <label for="reportTitle">Título do Relatório:</label>
+                        <input type="text" id="reportTitle" name="ReportTitle" required autocomplete="off" />
+                    </div>
+                    <div class="hours-container">
+                        <label for="analysisHours">Horas de Analise:</label>
+                        <input type="number" id="analysisHours" name="analysisHours" required min="0"
+                            autocomplete="off" />
+                    </div>
                 </div>
                 <div id="feature-container"></div>
                 <input type="hidden" id="formatInput" name="format" value="pdf" />
