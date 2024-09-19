@@ -68,18 +68,18 @@
           "horas": 4
         },
         "complexo": {
-          "horas": 8
+          "horas": 6
         }
       },
       "funcao": {
         "facil": {
-          "horas": 1
+          "horas": 2
         },
         "medio": {
           "horas": 4
         },
         "complexo": {
-          "horas": 6
+          "horas": 8
         }
       },
       "scripts": {
@@ -90,7 +90,7 @@
           "horas": 4
         },
         "complexo": {
-          "horas": 6
+          "horas": 8
         }
       },
       "modelagem": {
@@ -124,10 +124,10 @@
           "horas": 3
         },
         "medio": {
-          "horas": 8
+          "horas": 10
         },
         "complexo": {
-          "horas": 12
+          "horas": 18
         }
       }
     }
@@ -220,7 +220,7 @@
           "horas": 1
         },
         "medio": {
-          "horas": 4
+          "horas": 3
         },
         "complexo": {
           "horas": 6
@@ -228,13 +228,13 @@
       },
       "modelagem": {
         "facil": {
-          "horas": 3
+          "horas": 1
         },
         "medio": {
-          "horas": 6
+          "horas": 3
         },
         "complexo": {
-          "horas": 12
+          "horas": 6
         }
       }
     },
@@ -244,10 +244,10 @@
           "horas": 3
         },
         "medio": {
-          "horas": 5
+          "horas": 8
         },
         "complexo": {
-          "horas": 6
+          "horas": 12
         }
       }
     },
@@ -309,24 +309,13 @@
           "horas": 1
         },
         "medio": {
-          "horas": 4
+          "horas": 2
         },
         "complexo": {
-          "horas": 6
+          "horas": 4
         }
       },
       "job": {
-        "facil": {
-          "horas": 1
-        },
-        "medio": {
-          "horas": 5
-        },
-        "complexo": {
-          "horas": 8
-        }
-      },
-      "trigger": {
         "facil": {
           "horas": 2
         },
@@ -337,7 +326,7 @@
           "horas": 8
         }
       },
-      "funcao": {
+      "trigger": {
         "facil": {
           "horas": 1
         },
@@ -348,31 +337,54 @@
           "horas": 6
         }
       },
-      "scripts": {
+      "funcao": {
         "facil": {
-          "horas": 3
+          "horas": 1
         },
         "medio": {
-          "horas": 6
+          "horas": 3
         },
         "complexo": {
-          "horas": 10
+          "horas": 5
+        }
+      },
+      "scripts": {
+        "facil": {
+          "horas": 1
+        },
+        "medio": {
+          "horas": 3
+        },
+        "complexo": {
+          "horas": 5
         }
       },
       "modelagem": {
         "facil": {
-          "horas": 3
+          "horas": 1
         },
         "medio": {
-          "horas": 6
+          "horas": 3
         },
         "complexo": {
-          "horas": 12
+          "horas": 5
         }
       }
     },
     "api": {
       "operacao": {
+        "facil": {
+          "horas": 1
+        },
+        "medio": {
+          "horas": 3
+        },
+        "complexo": {
+          "horas": 4
+        }
+      }
+    },"servicos": {
+      "console": {
         "facil": {
           "horas": 3
         },
