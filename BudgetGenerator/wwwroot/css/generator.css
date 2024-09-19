@@ -178,6 +178,15 @@ h2 {
   margin-block: 1rem;
 }
 
+.error-message {
+  height: 3rem;
+  vertical-align: center;
+  margin-top: 1.3rem;
+  justify-content: center;
+  align-items: flex-end;
+  color: var(--color-red);
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -204,8 +213,8 @@ button {
   align-items: center;
   position: fixed;
   bottom: 3%;
-  right: -8.8%;
-  gap: 52%;
+  right: -1PX;
+  gap: 60%;
   margin-top: 3rem;
   width: 100%;
 
@@ -220,11 +229,11 @@ button {
     background-color: var(--color-green-logo);
   }
 
-  & div:last-of-type {
-    width: 35%;
+  & div {
+    width: 250px;
     display: flex;
     justify-content: center;
-    gap: 2%;
+    gap: 10PX;
     align-items: center;
   }
 }
@@ -292,7 +301,8 @@ select option:hover {
 .title-hours-container {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  align-items: end;
+  grid-template-rows: 1fr 0.4fr;
+  align-items: center;
   justify-content: center;
   width: 100%;
   gap: 5%;
@@ -300,4 +310,8 @@ select option:hover {
 
 .hours-container input[type="number"] {
   width: 100%;
+}
+
+.error-mesage-section {
+  grid-row: 2;
 }

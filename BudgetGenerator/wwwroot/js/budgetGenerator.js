@@ -130,7 +130,6 @@ function reindexFeaturesAndServices() {
   });
 }
 
-// Função para adicionar funcionalidade
 function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
   const funcionalidadeContainer = document.createElement("div");
   funcionalidadeContainer.className = "feature";
@@ -146,11 +145,17 @@ function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
     </div>
     <div>
       <label for="nomeFuncionalidade">Nome:</label>
-      <input type="text" name="Features[${funcionalidadeIndex}].Name" required autocomplete="off"/>
+      <input type="text" name="Features[${funcionalidadeIndex}].Name"  
+             data-val="true" 
+             data-val-required="O nome é obrigatório." />
+      <span class="error-message" data-valmsg-for="Features[${funcionalidadeIndex}].Name"></span>
     </div>
     <div>
       <label for="descricaoFuncionalidade">Descrição:</label>
-      <textarea name="Features[${funcionalidadeIndex}].Description" rows="3" required autocomplete="off"></textarea>
+      <textarea name="Features[${funcionalidadeIndex}].Description" rows="3" 
+                data-val="true"
+                data-val-required="A descrição é obrigatória."></textarea>
+      <span class="error-message" data-valmsg-for="Features[${funcionalidadeIndex}].Description"></span>
     </div>
     <div class="servicesContainer" data-service-index="0">
       <button type="button" class="add-service-btn">Adicionar Serviço</button>
@@ -167,6 +172,7 @@ function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
     .addEventListener("click", function () {
       funcionalidadeContainer.remove();
       reindexFeaturesAndServices();
+      saveFormState(); // Salva o estado após remover a funcionalidade
     });
 
   funcionalidadeContainer
@@ -176,7 +182,30 @@ function adicionarFuncionalidadeCampos(funcionalidadeIndex) {
     });
 
   reindexFeaturesAndServices();
+  saveFormState(); // Salva o estado logo após adicionar a funcionalidade
+
+  // Reaplica a validação unobtrusive para os novos campos adicionados dinamicamente
 }
+// Função para salvar o estado do formulário no localStorage
+function saveFormState() {
+  reindexFeaturesAndServices(); // Atualiza a lista de features e serviços
+
+  const formState = {
+    reportTitle: document.getElementById("reportTitle").value,
+    analysisHours: document.getElementById("analysisHours").value,
+    features: featuresList,
+  };
+
+  // Salva os dados no localStorage
+  localStorage.setItem("formState", JSON.stringify(formState));
+}
+
+// Função para salvar periodicamente
+function autoSaveForm() {
+  setInterval(saveFormState, 5000); // Salva a cada 5 segundos
+}
+
+// Função para restaurar o estado do formulário do localStorage
 
 // Função para adicionar serviços
 function adicionarServicos(funcionalidadeDiv, funcionalidadeIndex) {
@@ -341,6 +370,12 @@ function exportarRelatorio() {
   form.submit();
 }
 
+// Chama a função para restaurar o estado ao carregar a página
+window.onload = function () {
+  restoreFormState();
+  autoSaveForm(); // Inicia o autosave
+};
+
 // Event listeners para adicionar funcionalidades e gerar relatório
 document.getElementById("addFeatureBtn").addEventListener("click", function () {
   const funcionalidadeIndex = featuresList.length;
@@ -350,16 +385,156 @@ document.getElementById("addFeatureBtn").addEventListener("click", function () {
 document
   .getElementById("generatePdfButton")
   .addEventListener("click", function (e) {
-    e.preventDefault(); // Previne o comportamento padrão
+    e.preventDefault();
     exportarRelatorio();
   });
 
 document
   .getElementById("generateDocxButton")
   .addEventListener("click", function (e) {
-    e.preventDefault(); // Previne o comportamento padrão
+    e.preventDefault();
     exportarRelatorio();
   });
 
 // Carrega a matriz de horas ao iniciar
 fetchServiceMatrix();
+
+$(document).ready(function () {
+  // Inicializa a validação unobtrusive para garantir que os campos sejam validados corretamente
+
+  // Função para verificar se o formulário está válido antes de submeter
+  function validarFormularioAntesDeSubmeter(e) {
+    const form = $("#formReport");
+
+    // Verifica se o formulário é válido
+    if (!form.valid()) {
+      e.preventDefault(); // Impede a submissão do formulário se houver erros
+      alert("Há campos que precisam ser preenchidos corretamente."); // Alerta opcional
+    }
+  }
+
+  $("#generatePdfButton").click(function (e) {
+    if (!validarCamposFuncionalidades()) {
+      e.preventDefault();
+      exportarRelatorio();
+    } else {
+      document.getElementById("formatInput").value = "pdf";
+    }
+  });
+
+  $("#generateDocxButton").click(function (e) {
+    if (!validarCamposFuncionalidades()) {
+      e.preventDefault();
+      exportarRelatorio();
+    } else {
+      document.getElementById("formatInput").value = "docx";
+    }
+  });
+
+  // Event listener para o botão de reset
+  $("#resetButton").click(function () {
+    if (
+      confirm(
+        "Tem certeza que deseja resetar o formulário? Todos os dados serão perdidos."
+      )
+    ) {
+      resetForm();
+    }
+  });
+
+  function validarCamposFuncionalidades() {
+    let camposValidos = true;
+    $(".feature").each(function () {
+      const nomeFuncionalidade = $(this).find("input[name*='Name']").val();
+      const descricaoFuncionalidade = $(this)
+        .find("textarea[name*='Description']")
+        .val();
+
+      if (!nomeFuncionalidade || !descricaoFuncionalidade) {
+        camposValidos = false;
+        alert(
+          "Todos os campos de 'Nome' e 'Descrição' das funcionalidades devem ser preenchidos."
+        );
+        $(this).find("input[name*='Name']").focus(); // Foca no primeiro campo inválido
+        return false; // Para o loop assim que encontrar um campo inválido
+      }
+    });
+    return camposValidos;
+  }
+
+  // Função para resetar o formulário e limpar o localStorage
+  function resetForm() {
+    console.log("fui clicado'");
+    // Remove os dados salvos no localStorage
+    localStorage.removeItem("formState");
+
+    // Reseta os campos do formulário
+    document.getElementById("formReport").reset();
+
+    // Limpa o container de funcionalidades
+    document.getElementById("feature-container").innerHTML = "";
+
+    // Reseta a lista de funcionalidades
+    featuresList = [];
+  }
+
+  // Carrega a matriz de horas ao iniciar
+  fetchServiceMatrix();
+  autoSaveForm(); // Inicia o autosave
+});
+
+function restoreFormState() {
+  const savedState = localStorage.getItem("formState");
+  reindexFeaturesAndServices();
+
+  if (savedState) {
+    const formState = JSON.parse(savedState);
+
+    // Restaura o título do relatório e horas de análise
+    document.getElementById("reportTitle").value = formState.reportTitle;
+    document.getElementById("analysisHours").value = formState.analysisHours;
+
+    // Restaura as funcionalidades e serviços
+    formState.features.forEach((feature, index) => {
+      adicionarFuncionalidadeCampos(index); // Adiciona a funcionalidade
+
+      const featureContainer = document.querySelector(
+        `.feature[data-funcionalidade-index="${index}"]`
+      );
+
+      // Preenche os campos de cada funcionalidade
+      featureContainer.querySelector("input[name^='Features']").value =
+        feature.name;
+      featureContainer.querySelector("textarea[name^='Features']").value =
+        feature.description;
+
+      // Preenche os serviços
+      feature.services.forEach((service, serviceIndex) => {
+        adicionarServicos(featureContainer, index); // Adiciona os serviços corretamente
+
+        const serviceDiv =
+          featureContainer.querySelectorAll(".service")[serviceIndex]; // Pega o serviço correto
+        if (serviceDiv) {
+          serviceDiv.querySelector("select[name$='.Category']").value =
+            service.category;
+          serviceDiv.querySelector("select[name$='.Area']").value =
+            service.area;
+          serviceDiv.querySelector("select[name$='.ServiceType']").value =
+            service.serviceType;
+          serviceDiv.querySelector("select[name$='.Complexity']").value =
+            service.complexity;
+          serviceDiv.querySelector("input[name$='.Hours']").value =
+            service.hours;
+        }
+      });
+
+      // Atualiza o índice de serviços após a restauração
+      featureContainer
+        .querySelector(".servicesContainer")
+        .setAttribute("data-service-index", feature.services.length);
+    });
+
+    // Reindexa as funcionalidades e serviços após restaurar
+    reindexFeaturesAndServices();
+  }
+}

@@ -6,7 +6,9 @@ using Rotativa.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddRazorRuntimeCompilation()
+    .AddMvcOptions(options => options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor((fieldName) => $"{fieldName} é obrigatório"));
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 

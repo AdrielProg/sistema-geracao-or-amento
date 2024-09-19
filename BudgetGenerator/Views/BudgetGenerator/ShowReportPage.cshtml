@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/generator.css">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -19,13 +20,20 @@
                 <h1>Budget Generator</h1>
                 <div class="title-hours-container">
                     <div class="title-container">
-                        <label for="reportTitle">Título do Relatório:</label>
-                        <input type="text" id="reportTitle" name="ReportTitle" required autocomplete="off" />
+                        <label asp-for="ReportTitle" for="reportTitle">Título do Relatório:</label>
+                        <input asp-for="ReportTitle" type="text" id="reportTitle" name="ReportTitle" data-val="true"
+                            data-val-required="O título é obrigatório." autocomplete="off" />
+                    </div>
+                    <div class="error-mesage-section">
+                        <span asp-validation-for="ReportTitle" class="error-message"></span>
                     </div>
                     <div class="hours-container">
-                        <label for="analysisHours">Horas de Analise:</label>
-                        <input type="number" id="analysisHours" name="analysisHours" required min="0"
+                        <label asp-for="AnalysisHours" for="analysisHours">Horas de Analise:</label>
+                        <input asp-for="AnalysisHours" type="number" id="analysisHours" name="analysisHours" min="1"
                             autocomplete="off" />
+                    </div>
+                    <div class="error-mesage-section">
+                        <span asp-validation-for="AnalysisHours" class="error-message"></span>
                     </div>
                 </div>
                 <div id="feature-container"></div>
@@ -33,6 +41,7 @@
             </div>
             <div class="button-container">
                 <div>
+                    <button type="button" id="resetButton">Resetar Formulário</button>
                     <button type="button" id="addFeatureBtn">Adicionar Funcionalidade</button>
                 </div>
                 <div>

@@ -31,24 +31,36 @@ namespace BudgetGenerator.Controllers
         [HttpPost]
         public IActionResult GenerateReport(ReportInputModel featureModel, string format)
         {
+            // Verifica se o ModelState é válido
+            if (!ModelState.IsValid)
+            {
+                // Retorna à view com os erros
+                return View("ShowReportPage", featureModel);
+            }
+
             if (featureModel.Features == null || featureModel.Features.Count == 0)
             {
                 ModelState.AddModelError("", "Nenhuma funcionalidade foi adicionada.");
                 return View("ShowReportPage", featureModel);
             }
 
+            // Gera o modelo do relatório
             var reportModel = _reportService.GenerateReportModel(featureModel);
 
+            // Geração do PDF
             if (format == "pdf")
             {
                 var pdfBytes = _reportService.GeneratePdf(reportModel, ControllerContext);
                 return File(pdfBytes, "application/pdf", "RelatorioBudgetGenerator.pdf");
             }
+            // Geração do DOCX
             else if (format == "docx")
             {
                 var memoryStream = _reportService.GenerateDocx(reportModel);
                 return File(memoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "RelatorioBudgetGenerator.docx");
             }
+
+            // Caso o formato seja inválido
             return BadRequest("Formato inválido.");
         }
 

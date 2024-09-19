@@ -1,12 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BudgetGenerator.Models
 {
     public class ReportModel
     {
-        public string ReportTitle { get; set; }
+
+        public required string ReportTitle { get; set; }
         public List<FeatureModel> Features { get; set; } = new();
         public int AnalysisHours { get; set; }
-
-        public dynamic ReferenceMatrix { get; set; }
+        public required dynamic ReferenceMatrix { get; set; }
 
 
         public string CalculateTotalHoursPerItem(string category, string area, string serviceType)
@@ -90,11 +92,11 @@ namespace BudgetGenerator.Models
             string formatServiceName = service.ServiceType.ToLower() switch
             {
                 "web" => "Tela Web",
-                "operacao" => "Operação",
+                "operacao" => "Operação Api",
                 "pdf" => "Relatório PDF",
-                "excel_word" => "Excel/Word",
+                "excel_word" => "Excel / Word",
                 "procedure" => "Procedure",
-                "modelagem" => "Modelagem de Dados",
+                "modelagem" => "Modelagem",
                 "trigger" => "Trigger",
                 "funcao" => "Função",
                 "scripts" => "Script SQL",

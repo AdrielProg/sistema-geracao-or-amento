@@ -9,7 +9,7 @@ namespace BudgetGenerator.Models
     {
         public required string Name { get; set; }
 
-        public string Description { get; set; }
+        public required string Description { get; set; }
         public List<ServiceModel> Services { get; set; } = new List<ServiceModel>();
         public int AmountHours => Services.Sum(s => s.Hours);
 

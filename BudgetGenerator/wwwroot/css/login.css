@@ -21,16 +21,12 @@ body {
   font-size: 1.6rem;
   color: var(--color-grey);
   height: 100vh;
-  background-image: linear-gradient(
-      to bottom right,
+  background-image: linear-gradient(to bottom right,
       var(--color-blue-green) 20%,
-      var(--color-dark-blue) 80%
-    ),
-    linear-gradient(
-      to top left,
+      var(--color-dark-blue) 80%),
+    linear-gradient(to top left,
       var(--color-grey-bg) 30%,
-      var(--color-green-logo) 100%
-    );
+      var(--color-green-logo) 100%);
   font-family: Tahoma, sans-serif;
   position: relative;
   overflow: hidden;
@@ -51,6 +47,7 @@ body::before {
   z-index: -1;
   opacity: 0.9;
 }
+
 .button-container {
   width: 100%;
   padding-top: 0.3rem;
@@ -62,6 +59,7 @@ main {
   align-items: center;
   justify-content: center;
 }
+
 .head-form {
   max-width: 40rem;
   margin-bottom: 2rem;
@@ -70,6 +68,7 @@ main {
 header {
   justify-content: center;
 }
+
 img {
   width: 100%;
   height: 100%;
@@ -89,6 +88,7 @@ form {
 main .head-form {
   width: 100%;
   color: var(--color-grey);
+
   & h1 {
     margin-bottom: 0.4rem;
     font-weight: 540;
@@ -104,6 +104,7 @@ form input {
   color: var(--color-dark-blue);
   font-size: 1.5rem;
 }
+
 form input:active,
 form input:-webkit-autofill,
 form input:focus {
@@ -113,9 +114,10 @@ form input:focus {
   -webkit-box-shadow: 0 0 0 30px var(--color-grey) inset;
 }
 
-form .input-element + .input-element {
+form .input-element+.input-element {
   margin-top: 1.6rem;
 }
+
 form {
   & a {
     text-decoration: none;
@@ -137,15 +139,18 @@ form button {
   margin-top: 2rem;
   cursor: pointer;
 }
+
 .head-form form button:focus {
   outline: solid 0.1rem var(--color-blue-green);
 }
+
 form button:active {
   color: var(--color-grey);
   box-shadow: inset 0 0.5rem 0.5rem rgba(0, 0, 0, 0.3),
     inset 0 -0.5rem 0.5rem rgba(255, 255, 255, 0.2);
   transform: translateY(0.02rem);
 }
+
 #page {
   height: 100%;
   display: flex;
@@ -153,7 +158,7 @@ form button:active {
   align-items: center;
 }
 
-#page > .login-container {
+#page>.login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -166,13 +171,15 @@ form button:active {
   background-color: hsla(0, 0%, 0%, 0.329);
   box-shadow: 4px 1px 10px 10px rgba(4, 10, 11, 0.342);
 }
-#page > .bg-image {
+
+#page>.bg-image {
   height: 100%;
   justify-content: center;
   align-items: center;
   background-color: #060d1f;
 }
-#error-message {
+
+.error-message {
   height: 3rem;
   vertical-align: center;
   margin-top: 1.3rem;
@@ -180,11 +187,13 @@ form button:active {
   align-items: flex-end;
   color: var(--color-red);
 }
+
 .nav-container {
   justify-content: space-between;
   align-items: center;
   margin-top: 1.4rem;
 }
+
 .nav-container input[type="checkbox"] {
   appearance: none;
   padding: 0.9rem;
@@ -202,6 +211,7 @@ form button:active {
   background-color: var(--color-green-logo) !important;
   border-color: var(--color-green-logo);
 }
+
 .nav-container input[type="checkbox"]:focus {
   outline: none;
   box-shadow: 0 0 0 0.2rem var(--color-green-logo);
@@ -218,16 +228,20 @@ form button:active {
   border-width: 0 0.4rem 0.4rem 0;
   transform: rotate(45deg);
 }
+
 .checkbox-container {
   gap: 0.7rem;
   align-items: center;
 }
+
 .flex {
   display: flex;
 }
+
 .label-element {
   justify-content: space-between;
 }
+
 .input-element {
   flex-direction: column;
 
