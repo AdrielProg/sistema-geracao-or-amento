@@ -142,8 +142,9 @@ textarea {
 }
 
 .report-container {
-  width: 55%;
-  backdrop-filter: blur(0.5rem);
+  width: 85%;
+  padding: 5%;
+  margin: 0 auto;
   border-radius: 3.2rem;
   border: solid 0.36rem var(--color-dark-blue);
   backdrop-filter: blur(0.2rem);
@@ -153,7 +154,8 @@ textarea {
 }
 
 form {
-  padding: 6.9rem 5%;
+  padding: 1% 15%;
+  width: 100%;
 }
 
 .report-container h1 {
@@ -184,7 +186,7 @@ h2 {
 button {
   appearance: none;
   height: 4.6rem;
-  width: 20rem;
+  width: 13rem;
   color: #071724;
   font-size: 1.4rem;
   font-weight: 560;
@@ -198,8 +200,12 @@ button {
 
 .button-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  position: fixed;
+  bottom: 3%;
+  right: -8.8%;
+  gap: 52%;
   margin-top: 3rem;
   width: 100%;
 
@@ -209,13 +215,17 @@ button {
     box-shadow: 1px 1px 1px 1px rgb(191, 215, 237, 0.2);
   }
 
-  & .bg-button {
+  & #generatePdfButton:hover,
+  #generateDocxButton:hover {
+    background-color: var(--color-green-logo);
+  }
+
+  & div:last-of-type {
+    width: 35%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 3%;
-    height: 9rem;
-    width: 65%;
+    gap: 2%;
+    align-items: center;
   }
 }
 

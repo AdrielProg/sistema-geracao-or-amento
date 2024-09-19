@@ -76,5 +76,42 @@ namespace BudgetGenerator.Models
         public int GetTotalReportHours =>
          GetTotalTestHours + GetBudgetedDevelopmentHours + AnalysisHours;
 
+        public string FormatServiceNameWithComplexity(ServiceModel service)
+        {
+            bool isFeminine = IsFeminine(service.ServiceType);
+
+            string formattedComplexity = service.Complexity.ToLower() switch
+            {
+                "facil" => "Simples",
+                "medio" => isFeminine ? "Média" : "Médio",
+                "complexo" => isFeminine ? "Complexa" : "Complexo",
+                _ => service.Complexity
+            };
+            string formatServiceName = service.ServiceType.ToLower() switch
+            {
+                "web" => "Tela Web",
+                "operacao" => "Operação",
+                "pdf" => "Relatório PDF",
+                "excel_word" => "Excel/Word",
+                "procedure" => "Procedure",
+                "modelagem" => "Modelagem de Dados",
+                "trigger" => "Trigger",
+                "funcao" => "Função",
+                "scripts" => "Script SQL",
+                "console" => "Console",
+                _ => service.ServiceType
+            };
+
+            return $"{formatServiceName} {formattedComplexity}";
+        }
+
+        private bool IsFeminine(string serviceType)
+        {
+            var feminineServices = new List<string> { "procedure", "modelagem", "funcao", "web", "operacao" };
+
+            return feminineServices.Any(feminineService => serviceType.ToLower().Contains(feminineService.ToLower()));
+        }
+
     }
+
 }

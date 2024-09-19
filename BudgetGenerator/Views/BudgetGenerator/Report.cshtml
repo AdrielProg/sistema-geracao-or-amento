@@ -39,12 +39,12 @@
             {
                 List<string> serviceList = new List<string>();
                 <div class="feature-container">
-                    <p>Funcionalidade @featureCounter: @feature.Name (@Model.GetBudgetedDevelopmentHours)</p>
+                    <p>Funcionalidade @featureCounter: @feature.Name (@feature.GetDevelopmentHoursPerFeature Horas) </p>
                     <ul>
-                        @foreach (var service in feature.Services.Where(s => s.Category.ToLower() != "testes"))
-                        {
-                            serviceList.Add($"{service.ServiceType} {service.Complexity}");
-                        }
+                @foreach (var service in feature.Services)
+                {
+                    serviceList.Add(Model.FormatServiceNameWithComplexity(service));
+                }
                         @if (serviceList.Any())
                         {
                             string resultString = string.Join(" + ", serviceList);

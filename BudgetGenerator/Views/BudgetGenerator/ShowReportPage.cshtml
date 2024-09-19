@@ -14,8 +14,8 @@
 
 <body>
     <main class="main-container">
-        <div class="report-container">
-            <form asp-action="GenerateReport" method="post" id="formReport">
+        <form asp-action="GenerateReport" method="post" id="formReport">
+            <div class="report-container">
                 <h1>Budget Generator</h1>
                 <div class="title-hours-container">
                     <div class="title-container">
@@ -30,17 +30,19 @@
                 </div>
                 <div id="feature-container"></div>
                 <input type="hidden" id="formatInput" name="format" value="pdf" />
-                <div class="button-container">
-                    <div class="bg-button">
-                        <button type="button" id="addFeatureBtn">Adicionar Funcionalidade</button>
-                        <button type="submit" id="generatePdfButton"
-                            onclick="document.getElementById('formatInput').value = 'pdf';">Exportar PDF</button>
-                        <button type="submit" id="generateDocxButton"
-                            onclick="document.getElementById('formatInput').value = 'docx';">Gerar DOCX</button>
-                    </div>
+            </div>
+            <div class="button-container">
+                <div>
+                    <button type="button" id="addFeatureBtn">Adicionar Funcionalidade</button>
                 </div>
-            </form>
-        </div>
+                <div>
+                    <button type="submit" id="generatePdfButton"
+                        onclick="document.getElementById('formatInput').value = 'pdf';">Exportar PDF</button>
+                    <button type="submit" id="generateDocxButton"
+                        onclick="document.getElementById('formatInput').value = 'docx';">Gerar DOCX</button>
+                </div>
+            </div>
+        </form>
     </main>
 </body>
 <script src="~/js/budgetGenerator.js"></script>
